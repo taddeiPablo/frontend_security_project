@@ -1,9 +1,9 @@
 var express = require('express');
 var router = express.Router();
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Aqui el scan' });
-});
+const scanController = require('../controllers/scanController');
+
+/*router.get('/', scanController.init);*/
+router.post('/', scanController.scan);
 
 module.exports = router;
