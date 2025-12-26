@@ -1,22 +1,24 @@
 function calculateSecurityScore(findings) {
-  let score = 100;
+  let penalty = 0;
 
   findings.forEach(finding => {
     switch (finding.severity) {
       case 'high':
-        score -= 30;
+        penalty += 30;
         break;
       case 'medium':
-        score -= 15;
+        penalty += 15;
         break;
       case 'low':
-        score -= 5;
-        break;
-      default:
+        penalty += 5;
         break;
     }
   });
 
+  const MAX_PENALTY = 70;
+  const finalPenalty = Math.min(penalty, MAX_PENALTY);
+
+  const score = 100 - finalPenalty;
   return Math.max(score, 0);
 }
 
@@ -26,7 +28,22 @@ function getScoreLabel(score) {
   return 'Se recomienda aplicar mejoras';
 }
 
+function getScoreLabelClass(score) {
+  if (score >= 80) return 'good';
+  if (score >= 50) return 'warning';
+  return 'bad';
+}
+
+function normalizeSeverity(severity) {
+  const s = severity.toLowerCase();
+  if (s === 'critical' || s === 'high') return 'high';
+  if (s === 'medium' || s === 'warn') return 'medium';
+  return 'low';
+}
+
 module.exports = {
   calculateSecurityScore,
-  getScoreLabel
+  getScoreLabel,
+  getScoreLabelClass,
+  normalizeSeverity
 };

@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Informe de Seguridad</title>
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 13px;
+      color: #222;
+    }
+
+    h1, h2 {
+      color: #111;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+    }
+
+    th {
+      background: #f2f2f2;
+      text-align: left;
+      padding: 8px;
+      font-size: 12px;
+    }
+
+    td {
+      padding: 8px;
+      vertical-align: top;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .severity-low {
+      background-color: #e8f4fd;
+    }
+
+    .severity-medium {
+      background-color: #fff4e5;
+    }
+
+    .severity-high {
+      background-color: #fdecea;
+    }
+
+    td strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    footer {
+      margin-top: 40px;
+      font-size: 11px;
+      color: #666;
+    }
+    .cover {
+      height: 100vh;
+      text-align: center;
+      padding-top: 120px;
+    }
+
+    .cover-logo {
+      height: 50px;
+      margin-bottom: 30px;
+    }
+
+    .cover-url {
+      font-size: 14px;
+      color: #555;
+      margin-bottom: 40px;
+    }
+
+    .score-box {
+      width: 200px;
+      height: 200px;
+      margin: 0 auto 20px;
+      border-radius: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .score-number {
+      font-size: 56px;
+      font-weight: bold;
+    }
+
+    .score-label {
+      font-size: 14px;
+      margin-top: 6px;
+    }
+
+    .score-good {
+      background: #e6f4ea;
+      color: #137333;
+    }
+
+    .score-warning {
+      background: #fff4e5;
+      color: #b06000;
+    }
+
+    .score-bad {
+      background: #fdecea;
+      color: #b3261e;
+    }
+
+    .page-break {
+      page-break-after: always;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    .badge-low {
+      background-color: #e6f4ea;
+      color: #137333;
+    }
+
+    .badge-medium {
+      background-color: #fff4e5;
+      color: #b06000;
+    }
+
+    .badge-high {
+      background-color: #fdecea;
+      color: #b3261e;
+    }
+  </style>
+</head>
+
+<body>
+    <section class="cover">
+        <img src="{{agencyLogo}}" class="cover-logo" />
+
+        <h1>Informe de Seguridad Frontend</h1>
+
+        <p class="cover-url">{{siteUrl}}</p>
+
+        <div class="score-box score-{{scoreLabelClass}}">
+          <div class="score-number">{{score}}</div>
+          <div class="score-label">{{scoreLabel}}</div>
+        </div>
+
+        <p class="cover-date">Fecha del análisis: {{reportDate}}</p>
+    </section>
+    <div class="page-break"></div>
+    <header class="header">
+      <div class="logo">
+        <img src="{{agencyLogo}}" alt="Agency Logo" />
+      </div>
+
+      <div class="meta">
+        <h1>Informe de Seguridad del Sitio Web</h1>
+        <p>Revisión preventiva previa a la entrega o puesta en producción</p>
+
+        <ul>
+          <li><strong>Cliente:</strong> {{clientName}}</li>
+          <li><strong>Sitio evaluado:</strong> {{siteUrl}}</li>
+          <li><strong>Fecha:</strong> {{reportDate}}</li>
+        </ul>
+      </div>
+    </header>
+
+    <section class="summary">
+      <h2>Resumen Ejecutivo</h2>
+
+      <p>
+        Se realizó un análisis automatizado de seguridad frontend sobre el sitio evaluado,
+        con el objetivo de identificar configuraciones y prácticas que podrían representar
+        riesgos antes de su exposición en producción.
+      </p>
+
+      <p>
+        El análisis se centró en políticas de seguridad, configuración de headers HTTP
+        y exposición de recursos JavaScript.
+      </p>
+    </section>
+
+    <section class="findings">
+      <h2>Hallazgos Detectados</h2>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Severidad</th>
+            <th>Hallazgo</th>
+            <th>Impacto</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{findingsRows}}
+        </tbody>
+      </table>
+    </section>
+
+    <section class="recommendations">
+      <h2>Recomendaciones</h2>
+
+      <ul>
+        <li>Implementar políticas de seguridad HTTP adecuadas para reducir riesgos comunes.</li>
+        <li>Revisar la exposición de archivos JavaScript y configuraciones de build.</li>
+        <li>Incorporar este tipo de revisión como parte del proceso de entrega.</li>
+      </ul>
+    </section>
+
+    <footer class="footer">
+      <p>
+        Este informe se basa en un análisis automatizado y no reemplaza una auditoría
+        de seguridad manual completa.
+      </p>
+
+      <p class="cta">
+        Para una revisión más profunda o soporte en la implementación de mejoras,
+        recomendamos una evaluación técnica detallada.
+      </p>
+    </footer>
+
+</body>
+</html>

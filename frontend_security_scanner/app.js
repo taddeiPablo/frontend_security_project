@@ -3,6 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const rateLimit = require('express-rate-limit');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -20,9 +21,16 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+const scanLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutos
+  max: 20, // 20 scans por IP
+  standardHeaders: true,
+  legacyHeaders: false
+});
+
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/scanner', scanRouter);
+app.use('/scanner', scanLimiter, scanRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
