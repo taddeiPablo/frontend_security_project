@@ -4,6 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const rateLimit = require('express-rate-limit');
+const session = require('express-session');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -27,6 +28,15 @@ const scanLimiter = rateLimit({
   standardHeaders: true,
   legacyHeaders: false
 });
+
+app.use(session({
+  secret: 'frontend-security-demo-secret',
+  resave: false,
+  saveUninitialized: true,
+  cookie: {
+    maxAge: 24 * 60 * 60 * 1000 // 24h
+  }
+}));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);

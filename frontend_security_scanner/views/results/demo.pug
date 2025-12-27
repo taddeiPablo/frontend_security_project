@@ -1,0 +1,56 @@
+extends ../layout
+
+block content
+  .max-w-4xl.mx-auto.mt-10
+    h1.text-2xl.font-bold.mb-2 Resultado del análisis
+    p.text-gray-600.mb-6 Sitio analizado: #{url}
+
+    if findings.length === 0
+      p.text-green-600 ✔ No se detectaron problemas básicos
+    else
+      table.w-full.border
+        thead.bg-gray-100
+          tr
+            th.p-2 Severidad
+            th.p-2 Hallazgo
+            th.p-2 Impacto
+        tbody
+          each f in findings
+            tr
+              td.p-2 #{f.severity}
+              td.p-2
+                strong #{f.title}
+                p.text-sm.text-gray-600 #{f.description}
+              td.p-2 #{f.impact}
+      
+      if hiddenFindingsCount > 0
+        p.text-sm.text-gray-500.mt-4
+          | Se detectaron #{hiddenFindingsCount} hallazgos adicionales.
+          | Disponible en la versión completa para agencias.
+
+    .mt-6
+      p.font-semibold Score: #{score} — #{scoreLabel}
+    
+    if !error
+      a(
+        href="/scanner/demo/pdf"
+        class="inline-block mt-6 bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700"
+      )
+        Descargar reporte PDF (demo)
+    
+    p.text-xs.text-gray-500.mt-2
+      | Descarga gratuita limitada a un reporte por día.
+    
+    div.mt-8.p-4.bg-indigo-50.rounded
+      h3.text-lg.font-semibold.mb-2
+        | ¿Querés usar este reporte con tus clientes?
+      p.text-xs.text-gray-500.mt-6
+        | ¿Querés integrar este escaneo en tu proceso de QA o entrega?
+      p.text-sm.text-gray-600.mb-4
+        | La versión para agencias incluye escaneos completos,
+        | reportes personalizados con tu marca y uso ilimitado.
+      a(
+        href="mailto:contacto@tudominio.com?subject=Acceso versión agencias"
+        class="inline-block bg-indigo-600 text-white px-5 py-2 rounded hover:bg-indigo-700"
+      )
+        Solicitar acceso para agencias
