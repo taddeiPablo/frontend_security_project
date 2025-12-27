@@ -1,6 +1,6 @@
 const { loadPage } = require('../services/browser.service');
 const { runAnalyzers } = require('../services/analyzer.service');
-const { calculateSecurityScore, getScoreLabel } = require('../services/score.service');
+const { calculateSecurityScore, getScoreLabel, getScoreLabelClass } = require('../services/score.service');
 const { loadTemplate, generatePDF } = require('../services/pdf.service');
 const { renderReport } = require('../services/reportRenderer.service');
 
@@ -13,6 +13,7 @@ async function scan(req, res) {
 
     const score = calculateSecurityScore(findings);
     const scoreLabel = getScoreLabel(score);
+    const scoreLabelClass = getScoreLabelClass(score);
 
     const template = loadTemplate();
 
@@ -21,6 +22,7 @@ async function scan(req, res) {
       siteUrl: url,
       score,
       scoreLabel,
+      scoreLabelClass,
       reportDate: new Date().toLocaleDateString(),
       findings
     });

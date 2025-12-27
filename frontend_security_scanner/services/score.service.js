@@ -29,9 +29,9 @@ function getScoreLabel(score) {
 }
 
 function getScoreLabelClass(score) {
-  if (score >= 80) return 'good';
-  if (score >= 50) return 'warning';
-  return 'bad';
+  if (score >= 80) return 'score-good';
+  if (score >= 50) return 'score-warning';
+  return 'score-bad';
 }
 
 function normalizeSeverity(severity) {

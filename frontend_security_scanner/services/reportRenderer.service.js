@@ -22,10 +22,9 @@ function renderReport(template, data) {
 function renderFindings(findings) {
   return findings.map(f => {
     const severity = (f.severity || 'low').toLowerCase();
-
     return `
       <tr>
-        <td>${severityLabelMap[severity] || 'Bajo'}</td>
+        <td class='badge-${severity}'>${severityLabelMap[severity] || 'Bajo'}</td>
         <td>
           <strong>${f.title}</strong>
           <p>${f.description}</p>
