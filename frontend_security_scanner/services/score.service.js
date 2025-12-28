@@ -20,26 +20,47 @@ function calculateSecurityScore(findings) {
 
   const score = 100 - finalPenalty;
   return Math.max(score, 0);
-}
+};
 
-function getScoreLabel(score) {
+/*function getScoreLabel(score) {
   if (score >= 85) return 'Bueno';
   if (score >= 65) return 'Aceptable';
   return 'Se recomienda aplicar mejoras';
-}
+};*/
 
 function getScoreLabelClass(score) {
   if (score >= 80) return 'score-good';
   if (score >= 50) return 'score-warning';
   return 'score-bad';
-}
+};
 
 function normalizeSeverity(severity) {
   const s = severity.toLowerCase();
   if (s === 'critical' || s === 'high') return 'high';
   if (s === 'medium' || s === 'warn') return 'medium';
   return 'low';
-}
+};
+
+function getScoreLabel(score) {
+  if (score >= 80) {
+    return {
+      label: 'Buen nivel de seguridad',
+      className: 'text-green-600'
+    };
+  }
+
+  if (score >= 50) {
+    return {
+      label: 'Se recomienda aplicar mejoras',
+      className: 'text-yellow-600'
+    };
+  }
+
+  return {
+    label: 'Riesgo elevado',
+    className: 'text-red-600'
+  };
+};
 
 module.exports = {
   calculateSecurityScore,

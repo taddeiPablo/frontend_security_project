@@ -59,6 +59,7 @@ async function demoScan(req, res, next) {
         
         const result = await scannerService.demoScan(url);
         const demoFindings = limitFindings(result.findings, 3);
+        const scoreMeta = getScoreLabel(result.score);
 
         req.session.lastScan = result;
         res.render('results/demo', {
@@ -66,7 +67,8 @@ async function demoScan(req, res, next) {
           findings: demoFindings,
           hiddenFindingsCount: result.findings.length - demoFindings.length,
           score: result.score,
-          scoreLabel: result.scoreLabel
+          scoreLabel: scoreMeta.label,
+          scoreClass: scoreMeta.className
         });    
     } catch (error) {
       console.error(error);

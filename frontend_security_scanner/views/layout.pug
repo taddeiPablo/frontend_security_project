@@ -4,5 +4,15 @@ html
     title= title
     script(src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4")
     link(rel='stylesheet', href='/stylesheets/style.css')
-  body.bg-gray-50.text-gray-800
-    block content
+  body.bg-gray-50.text-gray-900
+    header.bg-white.border-b.border-gray-200
+      .max-w-6xl.mx-auto.px-6.py-4.flex.items-center.justify-between
+        h1.text-lg.font-semibold Frontend Security Scanner
+        span.text-sm.text-gray-500 Demo para agencias
+
+    main.max-w-6xl.mx-auto.px-6.py-10
+      block content
+
+    footer.border-t.border-gray-200.mt-16
+      .max-w-6xl.mx-auto.px-6.py-6.text-sm.text-gray-500
+        | © 2025 — Security Scanner MVP

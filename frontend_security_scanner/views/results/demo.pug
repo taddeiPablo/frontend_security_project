@@ -1,56 +1,62 @@
 extends ../layout
 
 block content
-  .max-w-4xl.mx-auto.mt-10
-    h1.text-2xl.font-bold.mb-2 Resultado del análisis
-    p.text-gray-600.mb-6 Sitio analizado: #{url}
+  // 1️⃣ TÍTULO DE RESULTADO
+  h2.text-3xl.font-bold.mb-6
+    | Resultado del análisis
 
-    if findings.length === 0
-      p.text-green-600 ✔ No se detectaron problemas básicos
-    else
-      table.w-full.border
-        thead.bg-gray-100
-          tr
-            th.p-2 Severidad
-            th.p-2 Hallazgo
-            th.p-2 Impacto
-        tbody
-          each f in findings
-            tr
-              td.p-2 #{f.severity}
-              td.p-2
-                strong #{f.title}
-                p.text-sm.text-gray-600 #{f.description}
-              td.p-2 #{f.impact}
-      
-      if hiddenFindingsCount > 0
-        p.text-sm.text-gray-500.mt-4
-          | Se detectaron #{hiddenFindingsCount} hallazgos adicionales.
-          | Disponible en la versión completa para agencias.
+  // 2️⃣ 🔥 SECURITY SCORE (ACÁ VA LO QUE PREGUNTÁS)
+  div.bg-white.border.border-gray-200.rounded-lg.p-6.mb-10
+    h3.text-sm.font-medium.text-gray-500.mb-1
+      | Security Score
 
-    .mt-6
-      p.font-semibold Score: #{score} — #{scoreLabel}
-    
-    if !error
-      a(
-        href="/scanner/demo/pdf"
-        class="inline-block mt-6 bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700"
-      )
-        Descargar reporte PDF (demo)
-    
-    p.text-xs.text-gray-500.mt-2
-      | Descarga gratuita limitada a un reporte por día.
-    
-    div.mt-8.p-4.bg-indigo-50.rounded
-      h3.text-lg.font-semibold.mb-2
-        | ¿Querés usar este reporte con tus clientes?
-      p.text-xs.text-gray-500.mt-6
-        | ¿Querés integrar este escaneo en tu proceso de QA o entrega?
-      p.text-sm.text-gray-600.mb-4
-        | La versión para agencias incluye escaneos completos,
-        | reportes personalizados con tu marca y uso ilimitado.
-      a(
-        href="mailto:contacto@tudominio.com?subject=Acceso versión agencias"
-        class="inline-block bg-indigo-600 text-white px-5 py-2 rounded hover:bg-indigo-700"
-      )
-        Solicitar acceso para agencias
+    div.flex.items-end.gap-2
+      span.text-4xl.font-bold(class=scoreClass)
+        | #{score}
+      span.text-lg.text-gray-500
+        | /100
+    p.text-sm.text-gray-600.mt-2
+      | #{scoreLabel}
+
+  // 3️⃣ DISCLAIMER DEMO (si aplica)
+  if hiddenFindingsCount > 0
+    p.text-sm.text-gray-500.mb-6
+      | Este es un resumen del análisis. La versión completa incluye más hallazgos.
+
+  // 4️⃣ TABLA DE HALLAZGOS
+  div.bg-white.border.border-gray-200.rounded-lg.p-6
+    h3.text-lg.font-semibold.mb-4 Hallazgos detectados
+
+    table.w-full.text-sm
+      thead.text-left.text-gray-600.border-b
+        tr
+          th.py-2 Severidad
+          th.py-2 Hallazgo
+          th.py-2 Impacto
+      tbody
+        each f in findings
+          tr.border-b
+            td.py-2.font-medium #{f.severity}
+            td.py-2
+              strong #{f.title}
+              p.text-gray-600 #{f.description}
+            td.py-2.text-gray-600 #{f.impact}
+
+  // 5️⃣ BOTÓN PDF DEMO
+  a(
+    href="/scanner/demo/pdf"
+    class="inline-block mt-6 bg-indigo-600 text-white px-5 py-2 rounded hover:bg-indigo-700"
+  )
+    Descargar reporte PDF (demo)
+
+  // 6️⃣ CTA FINAL (PASO 10.6)
+  div.mt-10.p-6.bg-indigo-50.rounded-lg
+    h3.text-lg.font-semibold.mb-2
+      | ¿Querés usar este reporte con tus clientes?
+    p.text-sm.text-gray-600.mb-4
+      | La versión para agencias incluye escaneos completos y reportes con tu marca.
+    a(
+      href="mailto:contacto@tudominio.com"
+      class="inline-block bg-indigo-600 text-white px-5 py-2 rounded"
+    )
+      Solicitar acceso para agencias
