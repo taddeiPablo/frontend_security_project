@@ -34,13 +34,23 @@ block content
           th.py-2 Hallazgo
           th.py-2 Impacto
       tbody
-        each f in findings
-          tr.border-b
-            td.py-2.font-medium #{f.severity}
-            td.py-2
-              strong #{f.title}
-              p.text-gray-600 #{f.description}
-            td.py-2.text-gray-600 #{f.impact}
+      each f in findings
+        tr(class="border-b last:border-b-0")
+          td.py-2
+            span.inline-block.px-2.py-1.text-xs.font-semibold.rounded(
+              class=
+                f.severity === 'high' ? 'bg-red-100 text-red-700' :
+                f.severity === 'medium' ? 'bg-yellow-100 text-yellow-700' :
+                'bg-green-100 text-green-700'
+            )
+              | #{f.severity.toUpperCase()}
+
+          td.py-2
+            strong #{f.title}
+            p.text-gray-600.text-sm #{f.description}
+
+          td.py-2.text-gray-600.text-sm
+            | #{f.impact}
 
   // 5️⃣ BOTÓN PDF DEMO
   a(

@@ -4,11 +4,17 @@ html
     title= title
     script(src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4")
     link(rel='stylesheet', href='/stylesheets/style.css')
+    link(rel="icon", type="image/png", href="/favicon.png")
   body.bg-gray-50.text-gray-900
     header.bg-white.border-b.border-gray-200
-      .max-w-6xl.mx-auto.px-6.py-4.flex.items-center.justify-between
-        h1.text-lg.font-semibold Frontend Security Scanner
-        span.text-sm.text-gray-500 Demo para agencias
+    .max-w-6xl.mx-auto.px-6.py-4.flex.items-center.justify-between
+      div.flex.items-center.gap-2
+        span.inline-flex.items-center.justify-center.w-8.h-8.rounded.bg-indigo-600.text-white.font-bold
+          | FS
+        span.text-lg.font-semibold
+          | Frontend Security Scanner
+      span.text-sm.text-gray-500
+        | Demo para agencias
 
     main.max-w-6xl.mx-auto.px-6.py-10
       block content
