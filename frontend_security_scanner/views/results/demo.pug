@@ -1,9 +1,11 @@
 extends ../layout
 
 block content
+  p.text-sm.text-gray-500.mb-4
+    | Scan completed for #{siteUrl}
   // 1️⃣ TÍTULO DE RESULTADO
   h2.text-3xl.font-bold.mb-6
-    | Resultado del análisis
+    | Analysis results
 
   // 2️⃣ 🔥 SECURITY SCORE (ACÁ VA LO QUE PREGUNTÁS)
   div.bg-white.border.border-gray-200.rounded-lg.p-6.mb-10
@@ -21,52 +23,56 @@ block content
   // 3️⃣ DISCLAIMER DEMO (si aplica)
   if hiddenFindingsCount > 0
     p.text-sm.text-gray-500.mb-6
-      | Este es un resumen del análisis. La versión completa incluye más hallazgos.
+      | This is a summary of the analysis. The full version includes more findings.
 
   // 4️⃣ TABLA DE HALLAZGOS
   div.bg-white.border.border-gray-200.rounded-lg.p-6
-    h3.text-lg.font-semibold.mb-4 Hallazgos detectados
+    h3.text-lg.font-semibold.mb-4 Findings detected
 
-    table.w-full.text-sm
-      thead.text-left.text-gray-600.border-b
-        tr
-          th.py-2 Severidad
-          th.py-2 Hallazgo
-          th.py-2 Impacto
-      tbody
-      each f in findings
-        tr(class="border-b last:border-b-0")
-          td.py-2
-            span.inline-block.px-2.py-1.text-xs.font-semibold.rounded(
-              class=
-                f.severity === 'high' ? 'bg-red-100 text-red-700' :
-                f.severity === 'medium' ? 'bg-yellow-100 text-yellow-700' :
-                'bg-green-100 text-green-700'
-            )
-              | #{f.severity.toUpperCase()}
+    if findings.length === 0
+      p.text-green-500
+        | No relevant findings were detected in this scan.
+    else
+      table.w-full.text-sm
+        thead.text-left.text-gray-600.border-b
+          tr
+            th.py-2 Severity
+            th.py-2 Finding
+            th.py-2 Impact
+        tbody
+        each f in findings
+          tr(class="border-b last:border-b-0")
+            td.py-2
+              span.inline-block.px-2.py-1.text-xs.font-semibold.rounded(
+                class=
+                  f.severity === 'high' ? 'bg-red-100 text-red-700' :
+                  f.severity === 'medium' ? 'bg-yellow-100 text-yellow-700' :
+                  'bg-green-100 text-green-700'
+              )
+                | #{f.severity.toUpperCase()}
 
-          td.py-2
-            strong #{f.title}
-            p.text-gray-600.text-sm #{f.description}
+            td.py-2
+              strong #{f.title}
+              p.text-gray-600.text-sm #{f.description}
 
-          td.py-2.text-gray-600.text-sm
-            | #{f.impact}
+            td.py-2.text-gray-600.text-sm
+              | #{f.impact}
 
   // 5️⃣ BOTÓN PDF DEMO
   a(
     href="/scanner/demo/pdf"
     class="inline-block mt-6 bg-indigo-600 text-white px-5 py-2 rounded hover:bg-indigo-700"
   )
-    Descargar reporte PDF (demo)
+    Download PDF report (demo)
 
   // 6️⃣ CTA FINAL (PASO 10.6)
   div.mt-10.p-6.bg-indigo-50.rounded-lg
     h3.text-lg.font-semibold.mb-2
-      | ¿Querés usar este reporte con tus clientes?
+      | Do you want to use this report with your clients?
     p.text-sm.text-gray-600.mb-4
-      | La versión para agencias incluye escaneos completos y reportes con tu marca.
+      | The agency version includes full scans and branded reports.
     a(
       href="mailto:contacto@tudominio.com"
       class="inline-block bg-indigo-600 text-white px-5 py-2 rounded"
     )
-      Solicitar acceso para agencias
+      Request access for agencies

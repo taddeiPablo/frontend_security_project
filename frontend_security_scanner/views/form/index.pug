@@ -1,29 +1,68 @@
 extends ../layout
 
 block content
-  h1.text-4xl.font-bold.mb-4
-    | Seguridad frontend clara, antes de producción
+  section.py-20
+    div.max-w-4xl.mx-auto.text-center
+      h1(class="text-4xl md:text-5xl font-extrabold text-gray-900")
+        | Frontend security checks
+        br
+        | before your site goes live
+
+      p.mt-6.text-lg.text-gray-600
+        | Detect frontend security issues before delivering a project to your client.
   .max-w-xl.mx-auto
     h2.text-3xl.font-bold.mb-4
-      | Auditá la seguridad frontend de un sitio
+      | Audit the security of your frontend.
 
     p.text-gray-600.mb-8
-      | Escaneo gratuito y reporte PDF de ejemplo para agencias.
+      | Free scan and PDF report preview for agencies.
 
-    form(method="POST", action="/scanner/demoScan", class="space-y-4")
+    div.mb-10
+      h2.text-xl.font-semibold.mb-6
+        | How it works
+
+      div(class="grid grid-cols-1 md:grid-cols-3 gap-6")
+        div.bg-white.border.border-gray-200.rounded-lg.p-5
+          span.text-indigo-600.font-bold.text-sm 1
+          h3.font-semibold.mt-2.mb-1
+            | Enter the URL
+          p.text-sm.text-gray-600
+            | We analyzed the public site without needing access.
+        div.bg-white.border.border-gray-200.rounded-lg.p-5
+          span.text-indigo-600.font-bold.text-sm 2
+          h3.font-semibold.mt-2.mb-1
+            | We ran the scan
+          p.text-sm.text-gray-600
+            | We detect relevant frontend configurations and risks.
+        div.bg-white.border.border-gray-200.rounded-lg.p-5
+          span.text-indigo-600.font-bold.text-sm 3
+          h3.font-semibold.mt-2.mb-1
+            | Get the report
+          p.text-sm.text-gray-600
+            | View results and download a sample PDF.
+
+    form(method="POST", action="/scanner/demoScan", class="space-y-4" onsubmit="handleSubmit(this)")
       input(
         type="url"
         name="url"
         required
-        placeholder="https://ejemplo.com"
+        placeholder="https://example.com"
         class="w-full px-4 py-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500"
       )
 
       button(
         type="submit"
+        id="scanBtn"
         class="w-full bg-indigo-600 text-white py-3 rounded font-medium hover:bg-indigo-700"
       )
-        Ejecutar escaneo gratuito
-
-    p.text-xs.text-gray-500.mt-4
-      | Demo limitada a una prueba y un reporte PDF.
+        Execute free scan
+      p.mt-3.text-sm.text-gray-500.text-center
+        | The scan may take up to 20 seconds. Do not close the tab.
+    p.text-xs.text-red-500.mt-4
+      | Demo limited to one test and one PDF report.
+  script. 
+    function handleSubmit(form) {
+      const btn = document.getElementById('scanBtn');
+      btn.disabled = true;
+      btn.innerText = 'Analyzing…';
+    }
