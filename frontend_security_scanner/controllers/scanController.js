@@ -91,34 +91,44 @@ async function demoScan(req, res, next) {
 };
 
 async function downloadDemoPdf(req, res) {
-  const lastResult = req.session?.lastScan;
-  const logoPath = path.join(__dirname, '../assets/logo_prueba.png');
-  const logoBase64 = fs.readFileSync(logoPath).toString('base64');
-  const logoDataUri = `data:image/png;base64,${logoBase64}`;
+  const lastResult = req.session.lastScan;
 
-  if(localStorage.getItem('downloaded')) {
-    localStorage.removeItem('downloaded');
+  // 1️⃣ No hay scan previo → volvemos al home
+  if (!lastResult) {
+    return res.redirect('/');
+  }
+
+  // 2️⃣ Ya descargó el PDF demo → volvemos a la vista con error
+  if (req.session.demoPdfUsed) {
     return res.render('results/demo', {
       url: lastResult.url,
-      findings: lastResult.findings || [],
+      findings: limitFindings(lastResult.findings || [], 3),
       hiddenFindingsCount: lastResult.hiddenFindingsCount,
       score: lastResult.score,
       scoreLabel: lastResult.scoreLabel,
       scoreClass: lastResult.scoreLabelClass,
-      error: 'You are only allowed to download the demo report once!!!',
+      error: 'You are only allowed to download the demo report once.',
       hideDownload: true,
       showBack: true
     });
   }
-  if (!lastResult) {
-    return res.redirect('/');
-  }
+
+  // 3️⃣ Marcamos que el PDF demo ya fue usado
+  req.session.demoPdfUsed = true;
+
+  // 4️⃣ Preparamos logo (base64)
+  const logoPath = path.join(__dirname, '../assets/logo_prueba.png');
+  const logoBase64 = fs.readFileSync(logoPath).toString('base64');
+  const logoDataUri = `data:image/png;base64,${logoBase64}`;
+
+  // 5️⃣ Limitamos findings para la demo
   const demoFindings = limitFindings(lastResult.findings, 3);
   const template = loadTemplate();
-  
+
+  // 6️⃣ Render HTML del reporte
   const html = renderReport(template, {
     agencyLogo: logoDataUri,
-    clientName: 'to be defined',
+    clientName: 'To be defined',
     siteUrl: lastResult.url,
     score: lastResult.score,
     scoreLabel: lastResult.scoreLabel,
@@ -127,13 +137,10 @@ async function downloadDemoPdf(req, res) {
     findings: demoFindings
   });
 
+  // 7️⃣ Generamos PDF
   const pdfBuffer = await pdfService.generatePDF(html);
-  if (!localStorage.getItem('downloaded')) {
-    localStorage.setItem('downloaded', 'true');
-  }else{
-    localStorage.removeItem('downloaded');
-  }
 
+  // 8️⃣ Enviamos PDF
   res.set({
     'Content-Type': 'application/pdf',
     'Content-Disposition': 'attachment; filename="security-report-demo.pdf"',
