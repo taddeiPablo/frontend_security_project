@@ -1,8 +1,8 @@
 
 const severityLabelMap = {
-  low: 'Bajo',
-  medium: 'Medio',
-  high: 'Alto'
+  low: 'low',
+  medium: 'medium',
+  high: 'high'
 };
 
 function renderReport(template, data) {
