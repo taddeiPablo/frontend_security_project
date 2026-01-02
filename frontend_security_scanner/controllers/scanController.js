@@ -6,8 +6,8 @@ const { renderReport } = require('../services/reportRenderer.service');
 const scannerService = require('../services/scanner.service');
 const pdfService = require('../services/pdf.service');
 const { limitFindings } = require('../utils/demoLimiter.util');
-const { LocalStorage } = require('node-localstorage');
-const localStorage = new LocalStorage('./scratch');
+//const { LocalStorage } = require('node-localstorage');
+//const localStorage = new LocalStorage('./scratch');
 const fs = require('fs');
 const path = require('path');
 
