@@ -10,7 +10,7 @@ function normalizeUrl(input) {
 
     return parsed.href;
   } catch {
-    return null;
+    return 'Please enter a valid URL (including http or https).';
   }
 }
 

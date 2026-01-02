@@ -26,7 +26,7 @@ function pdfLimiter(req, res, next) {
   }
 
   if (entry.count >= PDF_LIMIT) {
-    return res.status(429).render('results', {
+    return res.status(429).render('results/demo', {
       error: 'La descarga gratuita del reporte ya fue utilizada.'
     });
   }

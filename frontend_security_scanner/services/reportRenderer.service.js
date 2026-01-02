@@ -8,7 +8,8 @@ const severityLabelMap = {
 function renderReport(template, data) {
   let html = template;
   
-  html = html.replaceAll('{{clientName}}', data.clientName || 'Cliente de la agencia');
+  html = html.replaceAll('{{agencyLogo}}', data.agencyLogo || '');
+  html = html.replaceAll('{{clientName}}', data.clientName || 'Agency client');
   html = html.replaceAll('{{siteUrl}}', data.siteUrl);
   html = html.replaceAll('{{score}}', data.score);
   html = html.replaceAll('{{scoreLabel}}', data.scoreLabel);

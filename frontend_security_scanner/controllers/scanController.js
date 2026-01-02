@@ -6,6 +6,11 @@ const { renderReport } = require('../services/reportRenderer.service');
 const scannerService = require('../services/scanner.service');
 const pdfService = require('../services/pdf.service');
 const { limitFindings } = require('../utils/demoLimiter.util');
+const { LocalStorage } = require('node-localstorage');
+const localStorage = new LocalStorage('./scratch');
+const fs = require('fs');
+const path = require('path');
+
 
 async function scan(req, res, next) {
   try {
@@ -21,7 +26,7 @@ async function scan(req, res, next) {
     const template = loadTemplate();
 
     const html = renderReport(template, {
-      clientName: 'a definir',
+      clientName: 'to be defined',
       siteUrl: url,
       score,
       scoreLabel,
@@ -53,22 +58,29 @@ async function demoScan(req, res, next) {
 
         if (!url) {
           return res.render('form/index', {
-            error: 'Ingresá una URL válida'
+            error: 'Enter a valid URL'
           });
         }
         
         const result = await scannerService.demoScan(url);
         const demoFindings = limitFindings(result.findings, 3);
         const scoreMeta = getScoreLabel(result.score);
-
+        
+        result.scoreLabel = scoreMeta.label;
+        result.scoreLabelClass = scoreMeta.className;
+        result.hiddenFindingsCount = result.findings.length - demoFindings.length;
         req.session.lastScan = result;
+        req.session.lastScan.url = url;
+
         res.render('results/demo', {
           url,
-          findings: demoFindings,
-          hiddenFindingsCount: result.findings.length - demoFindings.length,
+          findings: demoFindings || [],
+          hiddenFindingsCount: result.hiddenFindingsCount,
           score: result.score,
           scoreLabel: scoreMeta.label,
-          scoreClass: scoreMeta.className
+          scoreClass: scoreMeta.className,
+          hideDownload: false,
+          showBack: false
         });    
     } catch (error) {
       console.error(error);
@@ -80,15 +92,33 @@ async function demoScan(req, res, next) {
 
 async function downloadDemoPdf(req, res) {
   const lastResult = req.session?.lastScan;
+  const logoPath = path.join(__dirname, '../assets/logo_prueba.png');
+  const logoBase64 = fs.readFileSync(logoPath).toString('base64');
+  const logoDataUri = `data:image/png;base64,${logoBase64}`;
 
+  if(localStorage.getItem('downloaded')) {
+    localStorage.removeItem('downloaded');
+    return res.render('results/demo', {
+      url: lastResult.url,
+      findings: lastResult.findings || [],
+      hiddenFindingsCount: lastResult.hiddenFindingsCount,
+      score: lastResult.score,
+      scoreLabel: lastResult.scoreLabel,
+      scoreClass: lastResult.scoreLabelClass,
+      error: 'You are only allowed to download the demo report once!!!',
+      hideDownload: true,
+      showBack: true
+    });
+  }
   if (!lastResult) {
     return res.redirect('/');
   }
   const demoFindings = limitFindings(lastResult.findings, 3);
   const template = loadTemplate();
-
+  
   const html = renderReport(template, {
-    clientName: 'a definir',
+    agencyLogo: logoDataUri,
+    clientName: 'to be defined',
     siteUrl: lastResult.url,
     score: lastResult.score,
     scoreLabel: lastResult.scoreLabel,
@@ -98,6 +128,11 @@ async function downloadDemoPdf(req, res) {
   });
 
   const pdfBuffer = await pdfService.generatePDF(html);
+  if (!localStorage.getItem('downloaded')) {
+    localStorage.setItem('downloaded', 'true');
+  }else{
+    localStorage.removeItem('downloaded');
+  }
 
   res.set({
     'Content-Type': 'application/pdf',

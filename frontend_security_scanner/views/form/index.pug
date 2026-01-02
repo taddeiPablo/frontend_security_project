@@ -40,8 +40,10 @@ block content
             | Get the report
           p.text-sm.text-gray-600
             | View results and download a sample PDF.
-
-    form(method="POST", action="/scanner/demoScan", class="space-y-4" onsubmit="handleSubmit(this)")
+    if error
+      div.mb-6.p-4.bg-red-50.border.border-red-200.text-red-700.rounded
+        | #{error}
+    form(method="POST", action="/scanner/demoScan", class="space-y-4", onsubmit="handleSubmit(this)")
       input(
         type="url"
         name="url"
@@ -56,13 +58,26 @@ block content
         class="w-full bg-indigo-600 text-white py-3 rounded font-medium hover:bg-indigo-700"
       )
         Execute free scan
+      p#scanStatus.mt-4.text-sm.text-gray-500.hidden
+        | Scanning site… this may take a few seconds
       p.mt-3.text-sm.text-gray-500.text-center
         | The scan may take up to 20 seconds. Do not close the tab.
     p.text-xs.text-red-500.mt-4
-      | Demo limited to one test and one PDF report.
-  script. 
-    function handleSubmit(form) {
+      | Demo limited to one PDF per report.
+block scripts
+  script.
+    function handleSubmit(formEl) {
       const btn = document.getElementById('scanBtn');
-      btn.disabled = true;
-      btn.innerText = 'Analyzing…';
+      const status = document.getElementById('scanStatus');
+
+      if (btn){
+        btn.disabled = true;
+        btn.innerText = 'Scanning…';
+      }
+
+      if (status){
+        status.classList.remove('hidden');
+      }
+
+      return true; // deja que el form siga
     }

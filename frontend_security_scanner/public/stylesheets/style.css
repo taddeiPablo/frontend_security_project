@@ -4,5 +4,11 @@ body {
 }
 
 a {
-  color: #00B7FF;
+  color: #ffffff;
+}
+
+#contact, 
+#full-version {
+  padding: revert-layer;
+  margin-right: 20px;
 }

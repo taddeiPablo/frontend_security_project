@@ -1,6 +1,10 @@
 extends ../layout
 
 block content
+  h2.text-2xl.font-bold.text-gray-900
+    | Scan results for #{url}
+  p.mt-2.text-gray-600
+    | We found #{findingsCount} potential frontend security issues.
   p.text-sm.text-gray-500.mb-4
     | Scan completed for #{siteUrl}
   // 1️⃣ TÍTULO DE RESULTADO
@@ -29,41 +33,57 @@ block content
   div.bg-white.border.border-gray-200.rounded-lg.p-6
     h3.text-lg.font-semibold.mb-4 Findings detected
 
-    if findings.length === 0
-      p.text-green-500
-        | No relevant findings were detected in this scan.
-    else
-      table.w-full.text-sm
-        thead.text-left.text-gray-600.border-b
+    - const safeFindings = Array.isArray(findings) ? findings : []
+
+    table.w-full.text-sm
+      thead.text-left.text-gray-600.border-b
+        tr
+          th.py-2 Severity
+          th.py-2 Finding
+          th.py-2 Impact
+
+      tbody
+        if safeFindings.length === 0
           tr
-            th.py-2 Severity
-            th.py-2 Finding
-            th.py-2 Impact
-        tbody
-        each f in findings
-          tr(class="border-b last:border-b-0")
-            td.py-2
-              span.inline-block.px-2.py-1.text-xs.font-semibold.rounded(
-                class=
-                  f.severity === 'high' ? 'bg-red-100 text-red-700' :
-                  f.severity === 'medium' ? 'bg-yellow-100 text-yellow-700' :
-                  'bg-green-100 text-green-700'
-              )
-                | #{f.severity.toUpperCase()}
+            td.py-4.text-center.text-gray-600(colspan="3")
+              | No findings to display.
+        else
+          each f in safeFindings
+            tr(class="border-b last:border-b-0")
+              td.py-2
+                span.inline-block.px-2.py-1.text-xs.font-semibold.rounded(
+                  class=
+                    f.severity === 'high' ? 'bg-red-100 text-red-700' :
+                    f.severity === 'medium' ? 'bg-yellow-100 text-yellow-700' :
+                    'bg-green-100 text-green-700'
+                )
+                  | #{f.severity.toUpperCase()}
 
-            td.py-2
-              strong #{f.title}
-              p.text-gray-600.text-sm #{f.description}
+              td.py-2
+                strong #{f.title}
+                p.text-gray-600.text-sm #{f.description}
 
-            td.py-2.text-gray-600.text-sm
-              | #{f.impact}
+              td.py-2.text-gray-600.text-sm
+                | #{f.impact}
+    p.mt-6.text-xs.text-gray-400
+      | This scan is automated and does not replace a full manual security audit.
+  if error
+    div.mt-4.p-4.bg-red-50.border.border-red-200.text-red-700.rounded
+      | #{error}
 
-  // 5️⃣ BOTÓN PDF DEMO
-  a(
-    href="/scanner/demo/pdf"
-    class="inline-block mt-6 bg-indigo-600 text-white px-5 py-2 rounded hover:bg-indigo-700"
-  )
-    Download PDF report (demo)
+  if !hideDownload
+    // 5️⃣ BOTÓN PDF DEMO
+    a(
+      href="/scanner/demo/pdf"
+      class="inline-block mt-6 bg-indigo-600 text-white px-5 py-2 rounded hover:bg-indigo-700"
+    )
+      Download PDF report (demo)
+  if showBack
+    a(
+      href="/"
+      class="inline-block mt-6 bg-indigo-600 text-white px-5 py-2 rounded hover:bg-indigo-700"
+    )
+      Return to main page
 
   // 6️⃣ CTA FINAL (PASO 10.6)
   div.mt-10.p-6.bg-indigo-50.rounded-lg
@@ -72,7 +92,14 @@ block content
     p.text-sm.text-gray-600.mb-4
       | The agency version includes full scans and branded reports.
     a(
+      id="contact"
       href="mailto:contacto@tudominio.com"
       class="inline-block bg-indigo-600 text-white px-5 py-2 rounded"
     )
-      Request access for agencies
+      Contact Agencies
+    a(
+      id="full-version"
+      href="/"
+      class="inline-block bg-indigo-600 text-white px-5 py-2 rounded"
+    )
+      the full version

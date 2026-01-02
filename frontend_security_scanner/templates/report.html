@@ -107,7 +107,7 @@
       color: #f1190eff;
     }
 
-    .page-break {
+    .page:not(:last-child) {
       page-break-after: always;
     }
 
@@ -134,66 +134,141 @@
       background-color: #fdecea;
       color: #b3261e;
     }
+
+    .header {
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid #e5e7eb;
+      padding-bottom: 12px;
+      margin-bottom: 24px;
+    }
+
+    .logo {
+      width: 48px;
+      height: 48px;
+    }
+
+    .header-text h1 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .header-text p {
+      margin: 0;
+      font-size: 12px;
+      color: #6b7280;
+    }
+    .score-wrapper {
+        display: flex;
+        justify-content: center;
+        margin: 32px 0;
+      }
+
+      .score-circle {
+        width: 160px;
+        height: 160px;
+        border-radius: 50%;
+        border: 6px solid;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+      }
+
+      .score-value {
+        font-size: 42px;
+        font-weight: 700;
+        line-height: 1;
+        margin-bottom: 6px;
+      }
+
+      .score-label {
+        font-size: 12px;
+        max-width: 120px;
+        color: #374151;
+      }
+
+      /* Variantes por severidad */
+      .score-good {
+        border-color: #10b981;
+        color: #065f46;
+      }
+
+      .score-medium {
+        border-color: #f59e0b;
+        color: #92400e;
+      }
+
+      .score-bad {
+        border-color: #ef4444;
+        color: #7f1d1d;
+      }
+
+
   </style>
 </head>
 
 <body>
     <section class="cover">
-        <img src="{{agencyLogo}}" class="cover-logo" />
-
-        <h1>Informe de Seguridad Frontend</h1>
-
-        <!--<p class="cover-url">{{siteUrl}}</p>-->
-
-        <div class="score-box {{scoreLabelClass}}">
-          <div class="score-number">{{score}}</div>
-          <div class="score-label">{{scoreLabel}}</div>
+        <div class="header">
+          <img
+            src="{{agencyLogo}}"
+            alt="Agency Logo"
+            style="width:48px;height:48px;object-fit:contain"
+          />
+          <!--<img src="../public/images/logo_prueba.png" style="width:48px; height:48px; margin-right:12px;" />-->
+          <div class="header-text">
+            <h1>Security Report</h1>
+            <p>Automated Web Security Scan</p>
+          </div>
         </div>
 
-        <p class="cover-date">Fecha del análisis: {{reportDate}}</p>
+        <h1>Frontend Security Report</h1>
+        <div class="score-wrapper">
+          <div class="score-circle score-medium">
+            <div class="score-value">{{score}}</div>
+            <div class="score-label">{{scoreLabel}}</div>
+          </div>
+        </div>
+
+        <p class="cover-date">Date of analysis: {{reportDate}}</p>
     </section>
     <div class="page-break"></div>
     <header class="header">
-      <div class="logo">
-        <img src="{{agencyLogo}}" alt="Agency Logo" />
-      </div>
-
       <div class="meta">
-        <h1>Informe de Seguridad del Sitio Web</h1>
-        <p>Revisión preventiva previa a la entrega o puesta en producción</p>
+        <h1>Frontend Security Report</h1>
+        <p>Preventive security review before delivery or production launch</p>
 
         <ul>
-          <li><strong>Cliente:</strong> {{clientName}}</li>
-          <li><strong>Sitio evaluado:</strong> {{siteUrl}}</li>
-          <li><strong>Fecha:</strong> {{reportDate}}</li>
+          <li><strong>Client:</strong> {{clientName}}</li>
+          <li><strong>Site analyzed:</strong> {{siteUrl}}</li>
+          <li><strong>Date:</strong> {{reportDate}}</li>
         </ul>
       </div>
     </header>
-
     <section class="summary">
-      <h2>Resumen Ejecutivo</h2>
-
+      <h2>Executive Summary</h2>
       <p>
-        Se realizó un análisis automatizado de seguridad frontend sobre el sitio evaluado,
-        con el objetivo de identificar configuraciones y prácticas que podrían representar
-        riesgos antes de su exposición en producción.
+        An automated frontend security analysis was performed on the evaluated site,
+        with the objective of identifying configurations and practices that could represent
+        risks before their exposure in production.
       </p>
 
       <p>
-        El análisis se centró en políticas de seguridad, configuración de headers HTTP
-        y exposición de recursos JavaScript.
+        The analysis focused on security policies, HTTP header configuration
+        and exposure of JavaScript resources.
       </p>
     </section>
-
     <section class="findings">
-      <h2>Hallazgos Detectados</h2>
+      <h2>Findings Detected</h2>
 
       <table>
         <thead>
           <tr>
-            <th>Severidad</th>
-            <th>Hallazgo</th>
-            <th>Impacto</th>
+            <th>Severity</th>
+            <th>Find</th>
+            <th>Impact</th>
           </tr>
         </thead>
         <tbody>
@@ -201,28 +276,24 @@
         </tbody>
       </table>
     </section>
-
     <section class="recommendations">
-      <h2>Recomendaciones</h2>
+      <h2>Recommendations</h2>
 
       <ul>
-        <li>Implementar políticas de seguridad HTTP adecuadas para reducir riesgos comunes.</li>
-        <li>Revisar la exposición de archivos JavaScript y configuraciones de build.</li>
+        <li>Implement appropriate HTTP security policies to reduce common risks.</li>
+        <li>Review the exposure of JavaScript files and build configurations.</li>
         <li>Incorporar este tipo de revisión como parte del proceso de entrega.</li>
       </ul>
     </section>
-
     <footer class="footer">
       <p>
-        Este informe se basa en un análisis automatizado y no reemplaza una auditoría
-        de seguridad manual completa.
+        This report is based on an automated analysis and does not replace a complete manual security audit.
       </p>
 
       <p class="cta">
-        Para una revisión más profunda o soporte en la implementación de mejoras,
-        recomendamos una evaluación técnica detallada.
+        For a deeper review or support in implementing improvements,
+        we recommend a detailed technical evaluation.
       </p>
     </footer>
-
 </body>
 </html>

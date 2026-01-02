@@ -32,7 +32,7 @@ const scanLimiter = rateLimit({
 app.use(session({
   secret: 'frontend-security-demo-secret',
   resave: false,
-  saveUninitialized: true,
+  saveUninitialized: false,
   cookie: {
     maxAge: 24 * 60 * 60 * 1000 // 24h
   }

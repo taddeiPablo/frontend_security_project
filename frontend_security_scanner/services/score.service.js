@@ -44,20 +44,20 @@ function normalizeSeverity(severity) {
 function getScoreLabel(score) {
   if (score >= 80) {
     return {
-      label: 'Buen nivel de seguridad',
+      label: 'Good level of security',
       className: 'text-green-600'
     };
   }
 
   if (score >= 50) {
     return {
-      label: 'Se recomienda aplicar mejoras',
+      label: 'Improvements are recommended',
       className: 'text-yellow-600'
     };
   }
 
   return {
-    label: 'Riesgo elevado',
+    label: 'High risk',
     className: 'text-red-600'
   };
 };
