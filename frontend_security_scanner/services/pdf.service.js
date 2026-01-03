@@ -3,7 +3,17 @@ const fs = require('fs');
 const path = require('path');
 
 async function generatePDF(reportHtml) {
-  const browser = await chromium.launch({ headless: true });
+  const browser = await chromium.launch({
+    headless: true,
+    args: [
+      '--no-sandbox',
+      '--disable-setuid-sandbox',
+      '--disable-dev-shm-usage',
+      '--disable-gpu',
+      '--no-zygote'
+    ]
+  });
+
   const page = await browser.newPage();
 
   await page.setContent(reportHtml, {
