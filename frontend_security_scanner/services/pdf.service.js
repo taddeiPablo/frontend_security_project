@@ -10,14 +10,15 @@ async function generatePDF(reportHtml) {
       '--disable-setuid-sandbox',
       '--disable-dev-shm-usage',
       '--disable-gpu',
-      '--no-zygote'
+      '--no-zygote',
+      '--single-process'
     ]
   });
 
   const page = await browser.newPage();
 
   await page.setContent(reportHtml, {
-    waitUntil: 'networkidle'
+    waitUntil: 'load'
   });
 
   const pdfBuffer = await page.pdf({
