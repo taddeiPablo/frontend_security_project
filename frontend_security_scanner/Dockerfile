@@ -1,6 +1,6 @@
 FROM node:22-bullseye
 
-# Instalar dependencias necesarias para Chromium
+# 1️⃣ Dependencias del sistema (CRÍTICO)
 RUN apt-get update && apt-get install -y \
   libglib2.0-0 \
   libnss3 \
@@ -13,24 +13,27 @@ RUN apt-get update && apt-get install -y \
   libxdamage1 \
   libxrandr2 \
   libgbm1 \
-  libpango-1.0-0 \
-  libpangocairo-1.0-0 \
   libasound2 \
-  libxshmfence1 \
-  libx11-xcb1 \
+  libpangocairo-1.0-0 \
+  libpango-1.0-0 \
+  libgtk-3-0 \
   ca-certificates \
   fonts-liberation \
   wget \
-  --no-install-recommends \
   && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
+# 2️⃣ Instalar dependencias Node
 COPY package*.json ./
 RUN npm ci
+
+# 3️⃣ 🔥 INSTALAR CHROMIUM DE PLAYWRIGHT 🔥
 RUN npx playwright install chromium
 
+# 4️⃣ Copiar el resto del código
 COPY . .
 
 EXPOSE 8080
-CMD ["npm", "start"]
+
+CMD ["npm", "run", "start"]
