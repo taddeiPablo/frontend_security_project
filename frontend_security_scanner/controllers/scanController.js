@@ -147,7 +147,7 @@ async function downloadDemoPdf(req, res) {
         res.redirect('/scanner/demo/pdf/downloadFile');
   } catch (error) {
     console.log("a ver si en realidad falla aca");
-    console.log(error);
+    console.error(error);
   }
 };
 
