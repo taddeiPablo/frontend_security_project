@@ -18,7 +18,7 @@ async function generatePDF(reportHtml) {
   const page = await browser.newPage();
 
   await page.setContent(reportHtml, {
-    waitUntil: 'networkidle'
+    waitUntil: 'load'
   });
 
   const pdfBuffer = await page.pdf({
