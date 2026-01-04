@@ -34,8 +34,7 @@ async function generatePDF(reportHtml) {
 
   await browser.close();
   return pdfBuffer;
-}
-
+};
 function loadTemplate() {
   const templatePath = path.join(
     __dirname,
@@ -43,9 +42,21 @@ function loadTemplate() {
   );
 
   return fs.readFileSync(templatePath, 'utf8');
-}
+};
+function renderReport(template, data) {
+  let html = template;
+
+  Object.entries(data).forEach(([key, value]) => {
+    const regex = new RegExp(`{{\\s*${key}\\s*}}`, 'g');
+    html = html.replace(regex, value ?? '');
+  });
+
+  return html;
+};
+
 
 module.exports = {
   generatePDF,
-  loadTemplate
+  loadTemplate,
+  renderReport
 };
