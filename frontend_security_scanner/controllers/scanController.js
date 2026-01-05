@@ -165,5 +165,39 @@ async function downloadFile(req, res) {
   }
 };
 
+async function renderDemoReport(req, res) {
+  console.log("Rendering demo report");
+  const lastResult = req.session.lastScan;
 
-module.exports = { scan, demoScan, downloadDemoPdf, downloadFile };
+  // 1. No hay scan
+  if (!lastResult) {
+    return res.redirect('/');
+  }
+
+
+  console.log(lastResult);
+  /*res.render('results/report-demo', {
+    target: "http://example.com",//lastResult.url,
+    date: new Date().toLocaleString(),
+    findings: [
+      { name: 'SQL Injection', severity: 'High', description: 'User input not sanitized' },
+      { name: 'Stored XSS', severity: 'High', description: 'Persistent script injection' },
+      { name: 'Open Redirect', severity: 'Low', description: 'Unvalidated redirect' }
+    ]
+  });*/
+  res.render('results/report-demo', {
+    url: lastResult.url,
+    findings: limitFindings(lastResult.findings || [], 3),
+    hiddenFindingsCount: lastResult.hiddenFindingsCount,
+    score: lastResult.score,
+    scoreLabel: lastResult.scoreLabel,
+    scoreClass: lastResult.scoreLabelClass,
+    error: 'You are only allowed to download the demo report once.',
+    hideDownload: true,
+    showBack: true
+  });
+};
+
+
+
+module.exports = { scan, demoScan, downloadDemoPdf, downloadFile, renderDemoReport };

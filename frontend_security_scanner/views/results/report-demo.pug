@@ -1,0 +1,79 @@
+doctype html
+html(lang="es")
+  head
+    meta(charset="UTF-8")
+    title Security Scan Report
+    link(rel="stylesheet", href="/stylesheets/report.css")
+  body
+    section.cover
+      div.header
+        img(src="{{agencyLogo}}", alt="Agency Logo", style="width:48px;height:48px;object-fit:contain")
+        // <img src="../public/images/logo_prueba.png" style="width:48px; height:48px; margin-right:12px;" />
+        div.header-text
+          h1 Security Report
+          p Automated Web Security Scan
+
+      h1 Frontend Security Report
+      div.score-wrapper
+        div.score-circle.score-medium
+          div.score-value #{score}
+          div.score-label #{scoreLabel}
+
+      p.cover-date Date of analysis: #{reportDate}
+
+    div.page-break
+
+    header.header
+      div.meta
+        h1 Frontend Security Report
+        p Preventive security review before delivery or production launch
+
+        ul
+          li
+            strong Client:
+            |  #{clientName}
+          li
+            strong Site analyzed:
+            |  #{siteUrl}
+          li
+            strong Date:
+            |  #{reportDate}
+
+    section.summary
+      h2 Executive Summary
+      p
+        | An automated frontend security analysis was performed on the evaluated site,
+        | with the objective of identifying configurations and practices that could represent
+        | risks before their exposure in production.
+
+      p
+        | The analysis focused on security policies, HTTP header configuration
+        | and exposure of JavaScript resources.
+
+    section.findings
+      h2 Findings Detected
+
+      table
+        thead
+          tr
+            th Severity
+            th Find
+            th Impact
+        tbody
+          | #{findingsRows}
+
+    section.recommendations
+      h2 Recommendations
+
+      ul
+        li Implement appropriate HTTP security policies to reduce common risks.
+        li Review the exposure of JavaScript files and build configurations.
+        li Incorporar este tipo de revisión como parte del proceso de entrega.
+
+    footer.footer
+      p
+        | This report is based on an automated analysis and does not replace a complete manual security audit.
+
+      p.cta
+        | For a deeper review or support in implementing improvements,
+        | we recommend a detailed technical evaluation.

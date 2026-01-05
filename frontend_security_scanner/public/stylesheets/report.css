@@ -1,0 +1,200 @@
+ body {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 13px;
+      color: #222;
+    }
+
+    h1, h2 {
+      color: #111;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+    }
+
+    th {
+      background: #f2f2f2;
+      text-align: left;
+      padding: 8px;
+      font-size: 12px;
+    }
+
+    td {
+      padding: 8px;
+      vertical-align: top;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .severity-low {
+      background-color: #e8f4fd;
+    }
+
+    .severity-medium {
+      background-color: #fff4e5;
+    }
+
+    .severity-high {
+      background-color: #fdecea;
+    }
+
+    td strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    footer {
+      margin-top: 40px;
+      font-size: 11px;
+      color: #666;
+    }
+    .cover {
+      height: 100vh;
+      text-align: center;
+      padding-top: 120px;
+    }
+
+    .cover-logo {
+      height: 50px;
+      margin-bottom: 30px;
+    }
+
+    .cover-url {
+      font-size: 1px;
+      color: #555;
+      margin-bottom: 40px;
+    }
+
+    .score-box {
+      width: 200px;
+      height: 200px;
+      margin: 0 auto 20px;
+      border-radius: 2%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .score-number {
+      font-size: 46px;
+      font-weight: bold;
+    }
+
+    .score-label {
+      font-size: 14px;
+      margin-top: 6px;
+    }
+
+    .score-good {
+      background: #fafafaff;
+      color: #137333;
+    }
+
+    .score-warning {
+      background: #fdfdfdff;
+      color: #fca607ff;
+    }
+
+    .score-bad {
+      background: #fafafaff;
+      color: #f1190eff;
+    }
+
+    .page:not(:last-child) {
+      page-break-after: always;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    .badge-low {
+      background-color: #e6f4ea;
+      color: #137333;
+    }
+
+    .badge-medium {
+      background-color: #fff4e5;
+      color: #b06000;
+    }
+
+    .badge-high {
+      background-color: #fdecea;
+      color: #b3261e;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid #e5e7eb;
+      padding-bottom: 12px;
+      margin-bottom: 24px;
+    }
+
+    .logo {
+      width: 48px;
+      height: 48px;
+    }
+
+    .header-text h1 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .header-text p {
+      margin: 0;
+      font-size: 12px;
+      color: #6b7280;
+    }
+    .score-wrapper {
+        display: flex;
+        justify-content: center;
+        margin: 32px 0;
+      }
+
+      .score-circle {
+        width: 160px;
+        height: 160px;
+        border-radius: 50%;
+        border: 6px solid;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+      }
+
+      .score-value {
+        font-size: 42px;
+        font-weight: 700;
+        line-height: 1;
+        margin-bottom: 6px;
+      }
+
+      .score-label {
+        font-size: 12px;
+        max-width: 120px;
+        color: #374151;
+      }
+
+      /* Variantes por severidad */
+      .score-good {
+        border-color: #10b981;
+        color: #065f46;
+      }
+
+      .score-medium {
+        border-color: #f59e0b;
+        color: #92400e;
+      }
+
+      .score-bad {
+        border-color: #ef4444;
+        color: #7f1d1d;
+      }
