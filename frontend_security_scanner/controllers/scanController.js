@@ -26,7 +26,7 @@ async function scan(req, res, next) {
     result.hiddenFindingsCount = result.findings.length - findings.length;
     req.session.lastScan = result;
     req.session.lastScan.url = url;
-    console.log(result);
+    
     res.render('results/demo', {
       url,
       findings: findings || [],
