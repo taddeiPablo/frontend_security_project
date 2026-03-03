@@ -1,42 +1,64 @@
 const { chromium } = require('playwright');
 
 async function loadPage(url) {
+ // 1. Lanzamos el browser
   const browser = await chromium.launch({ headless: true });
-  const page = await browser.newPage();
+  
+  try {
+    const page = await browser.newPage();
 
-  page.setDefaultNavigationTimeout(20000);
-  page.setDefaultTimeout(20000);
+    // Timeouts preventivos (20s es un buen balance)
+    page.setDefaultNavigationTimeout(20000);
+    page.setDefaultTimeout(20000);
 
-  let mainResponse = null;
-  const scriptResponses = [];
+    let mainResponse = null;
+    const scriptResponses = [];
 
-  page.on('response', async (response) => {
-    const req = response.request();
+    // 2. Listener de respuestas
+    page.on('response', async (response) => {
+      const req = response.request();
+      const status = response.status();
 
-    if (req.resourceType() === 'document' && response.url() === url) {
-      mainResponse = response;
-    }
+      // Capturamos el documento principal (manejando redirecciones 3xx)
+      if (req.resourceType() === 'document' && (status >= 200 && status < 400)) {
+        mainResponse = response;
+      }
 
-    if (req.resourceType() === 'script' &&
-        scriptResponses.length < 30) {
+      // Capturamos scripts (límite de 30 para no saturar memoria)
+      if (req.resourceType() === 'script' && scriptResponses.length < 30) {
+        try {
+          const body = await safeGetBody(response);
           scriptResponses.push({
             url: response.url(),
             headers: response.headers(),
-            body: await safeGetBody(response)
+            body: body
           });
-    }
-  });
+        } catch (e) {
+          // Si un script falla (ej. 404), simplemente lo ignoramos y seguimos
+          console.error(`Error capturando script: ${response.url()}`);
+        }
+      }
+    });
 
-  await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 20000 });
+    // 3. Navegación
+    // 'networkidle' es más seguro que 'domcontentloaded' para capturar scripts asíncronos
+    await page.goto(url, { waitUntil: 'networkidle', timeout: 25000 });
 
-  const headers = mainResponse ? mainResponse.headers() : {};
+    const headers = mainResponse ? mainResponse.headers() : {};
 
-  await browser.close();
+    return {
+      headers,
+      scripts: scriptResponses
+    };
 
-  return {
-    headers,
-    scripts: scriptResponses
-  };
+  } catch (error) {
+    console.error(`Error en loadPage para ${url}:`, error.message);
+    throw error; // Re-lanzamos para que el controller lo capture y avise al usuario
+  } finally {
+    // 4. EL PASO MÁS IMPORTANTE
+    // Pase lo que pase (éxito o error), cerramos el proceso de Chromium
+    await browser.close();
+  }
 }
 
 async function safeGetBody(response) {

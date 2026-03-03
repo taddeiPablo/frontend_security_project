@@ -6,8 +6,6 @@ const { renderReport } = require('../services/reportRenderer.service');
 const scannerService = require('../services/scanner.service');
 const pdfService = require('../services/pdf.service');
 const { limitFindings } = require('../utils/demoLimiter.util');
-//const { LocalStorage } = require('node-localstorage');
-//const localStorage = new LocalStorage('./scratch');
 const fs = require('fs');
 const path = require('path');
 
@@ -15,15 +13,31 @@ const path = require('path');
 async function scan(req, res, next) {
   try {
     const { url } = req.body;
-
     const pageData = await loadPage(url);
     const findings = runAnalyzers(pageData);
-
     const score = calculateSecurityScore(findings);
-    const scoreLabel = getScoreLabel(score);
-    const scoreLabelClass = getScoreLabelClass(score);
+    const scoreMeta = getScoreLabel(score);
 
-    const template = loadTemplate();
+    result = {};
+    result.findings = findings;
+    result.score = score;   
+    result.scoreLabel = scoreMeta.label;
+    result.scoreLabelClass = scoreMeta.className;
+    result.hiddenFindingsCount = result.findings.length - findings.length;
+    req.session.lastScan = result;
+    req.session.lastScan.url = url;
+    console.log(result);
+    res.render('results/demo', {
+      url,
+      findings: findings || [],
+      hiddenFindingsCount: result.hiddenFindingsCount,
+      score: result.score,
+      scoreLabel: scoreMeta.label,
+      scoreClass: scoreMeta.className,
+      hideDownload: false,
+      showBack: false
+    });
+    /*const template = loadTemplate();
 
     const html = renderReport(template, {
       clientName: 'to be defined',
@@ -43,7 +57,7 @@ async function scan(req, res, next) {
       'attachment; filename="security-report.pdf"'
     );
 
-    res.send(pdf);
+    res.send(pdf);*/
   } catch (error) {
     console.error(error);
     res.status(500).json({
@@ -52,7 +66,7 @@ async function scan(req, res, next) {
   }
 };
 
-async function demoScan(req, res, next) {
+async function demoScan(req, res) {
     try {
         const { url } = req.body;
 
@@ -65,13 +79,12 @@ async function demoScan(req, res, next) {
         const result = await scannerService.demoScan(url);
         const demoFindings = limitFindings(result.findings, 3);
         const scoreMeta = getScoreLabel(result.score);
-        
         result.scoreLabel = scoreMeta.label;
         result.scoreLabelClass = scoreMeta.className;
         result.hiddenFindingsCount = result.findings.length - demoFindings.length;
         req.session.lastScan = result;
         req.session.lastScan.url = url;
-
+        
         res.render('results/demo', {
           url,
           findings: demoFindings || [],
@@ -85,7 +98,7 @@ async function demoScan(req, res, next) {
     } catch (error) {
       console.error(error);
       res.status(500).json({
-        error: 'No fue posible generar el reporte'
+        error: 'Unable to generate the report'
       });    
     }
 };
@@ -166,25 +179,13 @@ async function downloadFile(req, res) {
 };
 
 async function renderDemoReport(req, res) {
-  console.log("Rendering demo report");
   const lastResult = req.session.lastScan;
-
-  // 1. No hay scan
+  
   if (!lastResult) {
     return res.redirect('/');
   }
-
-
-  console.log(lastResult);
-  /*res.render('results/report-demo', {
-    target: "http://example.com",//lastResult.url,
-    date: new Date().toLocaleString(),
-    findings: [
-      { name: 'SQL Injection', severity: 'High', description: 'User input not sanitized' },
-      { name: 'Stored XSS', severity: 'High', description: 'Persistent script injection' },
-      { name: 'Open Redirect', severity: 'Low', description: 'Unvalidated redirect' }
-    ]
-  });*/
+  
+  const reportDateNow = new Date().toLocaleDateString();
   res.render('results/report-demo', {
     url: lastResult.url,
     findings: limitFindings(lastResult.findings || [], 3),
@@ -194,7 +195,8 @@ async function renderDemoReport(req, res) {
     scoreClass: lastResult.scoreLabelClass,
     error: 'You are only allowed to download the demo report once.',
     hideDownload: true,
-    showBack: true
+    showBack: true,
+    reportDate: reportDateNow
   });
 };
 

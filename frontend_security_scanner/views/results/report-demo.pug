@@ -2,78 +2,161 @@ doctype html
 html(lang="es")
   head
     meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
     title Security Scan Report
     link(rel="stylesheet", href="/stylesheets/report.css")
-  body
-    section.cover
-      div.header
-        img(src="{{agencyLogo}}", alt="Agency Logo", style="width:48px;height:48px;object-fit:contain")
-        // <img src="../public/images/logo_prueba.png" style="width:48px; height:48px; margin-right:12px;" />
-        div.header-text
-          h1 Security Report
-          p Automated Web Security Scan
+  body.report-body
+    // ===== COVER PAGE =====
+    section.cover-page
+      div.cover-container
+        div.cover-header
+          //img.cover-logo(src="{{agencyLogo}}", alt="Agency Logo")
+          h1.cover-title Security Scan Report
+          p.cover-subtitle Automated Frontend Security Analysis
 
-      h1 Frontend Security Report
-      div.score-wrapper
-        div.score-circle.score-medium
-          div.score-value #{score}
-          div.score-label #{scoreLabel}
+        div.cover-main
+          h2.cover-heading Frontend Security Report
+          
+          div.score-wrapper
+            div.score-circle.score-medium
+              div.score-value #{score}
+              div.score-label #{scoreLabel}
 
-      p.cover-date Date of analysis: #{reportDate}
+          div.cover-meta
+              //p.meta-item
+                span.meta-label Client:
+                span.meta-value #{clientName}
+              p.meta-item
+                span.meta-label Website:
+                span.meta-value #{url}
+              p.meta-item
+                span.meta-label Analysis Date:
+                span.meta-value #{reportDate || '‑'}
 
+    // ===== PAGE BREAK =====
     div.page-break
 
-    header.header
-      div.meta
-        h1 Frontend Security Report
-        p Preventive security review before delivery or production launch
+    // ===== MAIN CONTENT =====
+    main.report-main
+      // ===== HEADER SECTION =====
+      header.report-header
+        div.header-top
+          //div.header-logo
+            img(src="{{agencyLogo}}", alt="Agency Logo")
+          div.header-info
+            h1.header-title Frontend Security Report
+            p.header-subtitle Preventive Security Review & Risk Assessment
 
-        ul
-          li
-            strong Client:
-            |  #{clientName}
-          li
-            strong Site analyzed:
-            |  #{siteUrl}
-          li
-            strong Date:
-            |  #{reportDate}
+      // ===== METADATA SECTION =====
+      section.metadata-section
+        div.metadata-grid
+          div.metadata-card
+            span.metadata-icon 👤
+            h3.metadata-label Client
+            p.metadata-value #{clientName}
+          
+          div.metadata-card
+            span.metadata-icon 🌐
+            h3.metadata-label Website
+            p.metadata-value #{siteUrl}
+          
+          div.metadata-card
+            span.metadata-icon 📅
+            h3.metadata-label Date
+            p.metadata-value= reportDate || '‑'
 
-    section.summary
-      h2 Executive Summary
-      p
-        | An automated frontend security analysis was performed on the evaluated site,
-        | with the objective of identifying configurations and practices that could represent
-        | risks before their exposure in production.
+      // ===== EXECUTIVE SUMMARY =====
+      section.section-summary
+        div.section-header
+          h2.section-title Executive Summary
+          div.section-divider
+        
+        div.summary-content
+          p.summary-text
+            | This report presents the results of an automated frontend security analysis performed on the evaluated website.
+            | The assessment focused on identifying security misconfigurations, insecure HTTP headers,
+            | and JavaScript resource exposure that could represent potential risks before production deployment.
+          
+          div.analysis-scope
+            h4.scope-title Analysis Scope
+            ul.scope-list
+              li Security policy validation (CSP, X-Frame-Options, etc.)
+              li HTTP header configuration review
+              li JavaScript resources and build configuration exposure
+              li Sensitive information disclosure risks
 
-      p
-        | The analysis focused on security policies, HTTP header configuration
-        | and exposure of JavaScript resources.
+      // ===== FINDINGS SECTION =====
+      section.section-findings
+        div.section-header
+          h2.section-title Findings Detected
+          div.section-divider
+        
+        div.findings-container
+          table.findings-table
+            thead.table-header
+              tr
+                th.col-severity Severity
+                th.col-finding Finding
+                th.col-impact Impact
+            tbody.table-body
+              each finding in findings
+                tr
+                  td.col-severity #{finding.severity}
+                  td.col-finding #{finding.description}
+                  td.col-impact #{finding.impact}
 
-    section.findings
-      h2 Findings Detected
+      // ===== RECOMMENDATIONS SECTION =====
+      section.section-recommendations
+        div.section-header
+          h2.section-title Recommendations
+          div.section-divider
+        
+        div.recommendations-content
+          ul.recommendations-list
+            li
+              span.rec-icon ✓
+              div.rec-item
+                strong Implement Security Headers
+                p Configure appropriate HTTP security headers to reduce common attack vectors and enforce security policies.
+            
+            li
+              span.rec-icon ✓
+              div.rec-item
+                strong Secure JavaScript Resources
+                p Review and minimize the exposure of JavaScript files, source maps, and build configuration details in production.
+            
+            li
+              span.rec-icon ✓
+              div.rec-item
+                strong Security Review Process
+                p Incorporate automated security reviews as part of your delivery pipeline.
+            
+            li
+              span.rec-icon ✓
+              div.rec-item
+                strong Manual Audit
+                p Schedule periodic manual security assessments to complement automated analysis.
 
-      table
-        thead
-          tr
-            th Severity
-            th Find
-            th Impact
-        tbody
-          | #{findingsRows}
+      // ===== NEXT STEPS SECTION =====
+      section.section-next-steps
+        div.next-steps-card
+          h3.next-steps-title Next Steps
+          p.next-steps-text
+            | This automated report provides a snapshot of potential security issues.
+            | We recommend scheduling a detailed technical evaluation for comprehensive remediation planning.
+          
+          div.next-steps-actions
+            p 📧 For support in implementing improvements, contact the security team.
+            p 🔍 Consider a complete manual security audit for production systems.
 
-    section.recommendations
-      h2 Recommendations
-
-      ul
-        li Implement appropriate HTTP security policies to reduce common risks.
-        li Review the exposure of JavaScript files and build configurations.
-        li Incorporar este tipo de revisión como parte del proceso de entrega.
-
-    footer.footer
-      p
-        | This report is based on an automated analysis and does not replace a complete manual security audit.
-
-      p.cta
-        | For a deeper review or support in implementing improvements,
-        | we recommend a detailed technical evaluation.
+    // ===== FOOTER =====
+    footer.report-footer
+      div.footer-content
+        p.footer-disclaimer
+          | This report is based on automated frontend analysis and does not replace a complete manual security audit.
+        
+        p.footer-info
+          | For a deeper review or technical support, we recommend a detailed security evaluation by qualified professionals.
+      
+      div.footer-bottom
+        p.footer-date Report generated: #{reportDate}

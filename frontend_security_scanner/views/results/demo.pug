@@ -84,6 +84,15 @@ block content
       class="inline-block mt-6 bg-indigo-600 text-white px-5 py-2 rounded hover:bg-indigo-700"
     )
       Return to main page
+  div.upgrade-container(style="margin-top: 40px; padding: 20px; border: 2px dashed #ff9800; background: #fff5e6; text-align: center;")
+    h3 🚀 ¡Se detectaron riesgos adicionales!
+    p Hemos encontrado posibles claves expuestas y vulnerabilidades de infraestructura que no se muestran en la versión gratuita.
+  
+    // Botón de prueba (luego será el de Stripe)
+    form(action="/scanner/" method="POST")
+      input(type="hidden" name="url" value=url)
+      button(type="submit" style="background: #ff9800; color: white; padding: 15px 30px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;") 
+        | [TEST] Generar Reporte Full (Sin Errores)
 
   // 6️⃣ CTA FINAL (PASO 10.6)
   div.mt-10.p-6.bg-indigo-50.rounded-lg
