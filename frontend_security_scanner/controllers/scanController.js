@@ -8,28 +8,39 @@ const pdfService = require('../services/pdf.service');
 const { limitFindings } = require('../utils/demoLimiter.util');
 const fs = require('fs');
 const path = require('path');
+const remediationData = require('../utils/remediationData');
 
 
 async function scan(req, res, next) {
   try {
     const { url } = req.body;
     const pageData = await loadPage(url);
-    const findings = runAnalyzers(pageData);
-    const score = calculateSecurityScore(findings);
+    const rawFindings = runAnalyzers(pageData);
+
+    // 2. MAPEO: Aquí es donde ocurre la magia para el cliente Premium
+    const findingsWithRemediation = rawFindings.map(f => {
+        return {
+            ...f,
+            // Buscamos en nuestro JSON si existe una solución para el ID del hallazgo
+            remediation: remediationData[f.id] || null 
+        };
+    });
+
+    const score = calculateSecurityScore(findingsWithRemediation);
     const scoreMeta = getScoreLabel(score);
 
     result = {};
-    result.findings = findings;
+    result.findings = findingsWithRemediation;
     result.score = score;   
     result.scoreLabel = scoreMeta.label;
     result.scoreLabelClass = scoreMeta.className;
-    result.hiddenFindingsCount = result.findings.length - findings.length;
+    result.hiddenFindingsCount = result.findings.length - findingsWithRemediation.length;
     req.session.lastScan = result;
     req.session.lastScan.url = url;
     
     res.render('results/demo', {
       url,
-      findings: findings || [],
+      findings: findingsWithRemediation || [],
       hiddenFindingsCount: result.hiddenFindingsCount,
       score: result.score,
       scoreLabel: scoreMeta.label,

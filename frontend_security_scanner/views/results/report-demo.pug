@@ -104,6 +104,15 @@ html(lang="es")
                   td.col-severity #{finding.severity}
                   td.col-finding #{finding.description}
                   td.col-impact #{finding.impact}
+                // Si el hallazgo tiene solución y es un usuario "Premium" (o para tentar al de la demo)
+                if finding.remediation
+                  tr
+                    td(colspan="3" style="background-color: #f9fafb; padding: 15px;")
+                      strong 🛠️ Cómo arreglarlo:
+                      p #{finding.remediation.steps}
+                      if finding.remediation.code
+                        pre
+                          code #{finding.remediation.code.express}
 
       // ===== RECOMMENDATIONS SECTION =====
       section.section-recommendations
