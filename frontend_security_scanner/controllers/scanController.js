@@ -15,13 +15,11 @@ async function scan(req, res, next) {
   try {
     const { url } = req.body;
     const pageData = await loadPage(url);
-    const rawFindings = runAnalyzers(pageData);
+    const rawFindings = await runAnalyzers(pageData, url);
 
-    // 2. MAPEO: Aquí es donde ocurre la magia para el cliente Premium
     const findingsWithRemediation = rawFindings.map(f => {
         return {
             ...f,
-            // Buscamos en nuestro JSON si existe una solución para el ID del hallazgo
             remediation: remediationData[f.id] || null 
         };
     });
@@ -48,27 +46,7 @@ async function scan(req, res, next) {
       hideDownload: false,
       showBack: false
     });
-    /*const template = loadTemplate();
-
-    const html = renderReport(template, {
-      clientName: 'to be defined',
-      siteUrl: url,
-      score,
-      scoreLabel,
-      scoreLabelClass,
-      reportDate: new Date().toLocaleDateString(),
-      findings
-    });
-
-    const pdf = await generatePDF(html);
-
-    res.setHeader('Content-Type', 'application/pdf');
-    res.setHeader(
-      'Content-Disposition',
-      'attachment; filename="security-report.pdf"'
-    );
-
-    res.send(pdf);*/
+    
   } catch (error) {
     console.error(error);
     res.status(500).json({
@@ -210,7 +188,6 @@ async function renderDemoReport(req, res) {
     reportDate: reportDateNow
   });
 };
-
 
 
 module.exports = { scan, demoScan, downloadDemoPdf, downloadFile, renderDemoReport };

@@ -31,6 +31,16 @@ function analyzeSecurityHeaders(headers) {
     });
   }
 
+  if (headers['access-control-allow-origin'] === '*') {
+    findings.push({
+        id: 'CORS_WILDCARD',
+        severity: 'high',
+        title: 'CORS Wildcard detectado (*)',
+        impact: 'Permite que cualquier dominio realice peticiones y lea datos de tu sitio.'
+    });
+  }
+
+
   return findings;
 }
 
