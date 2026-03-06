@@ -7,7 +7,7 @@ const scanController = require('../controllers/scanController');
 
 router.post('/', scanController.scan);
 router.post('/demoScan', scanController.demoScan);
-router.get('/demo/pdf', scanController.downloadDemoPdf);
-router.get('/demo/pdf/downloadFile', scanController.downloadFile);
+/*router.get('/demo/pdf', scanController.downloadDemoPdf);
+router.get('/demo/pdf/downloadFile', scanController.downloadFile);*/
 router.get('/demo/report', scanController.renderDemoReport);
 module.exports = router;
