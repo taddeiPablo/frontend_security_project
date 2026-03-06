@@ -1,13 +1,8 @@
 const { loadPage } = require('../services/browser.service');
 const { runAnalyzers } = require('../services/analyzer.service');
-const { calculateSecurityScore, getScoreLabel, getScoreLabelClass } = require('../services/score.service');
-const { loadTemplate, generatePDF } = require('../services/pdf.service');
-const { renderReport } = require('../services/reportRenderer.service');
+const { calculateSecurityScore, getScoreLabel } = require('../services/score.service');
 const scannerService = require('../services/scanner.service');
-const pdfService = require('../services/pdf.service');
 const { limitFindings } = require('../utils/demoLimiter.util');
-const fs = require('fs');
-const path = require('path');
 const remediationData = require('../utils/remediationData');
 
 
@@ -92,81 +87,6 @@ async function demoScan(req, res) {
     }
 };
 
-async function downloadDemoPdf(req, res) {
-  try {
-        const lastResult = req.session.lastScan;
-
-        // 1. No hay scan
-        if (!lastResult) {
-          return res.redirect('/');
-        }
-
-        // 2. Ya descargó
-        if (req.session.demoPdfUsed) {
-          return res.render('results/demo', {
-            url: lastResult.url,
-            findings: limitFindings(lastResult.findings || [], 3),
-            hiddenFindingsCount: lastResult.hiddenFindingsCount,
-            score: lastResult.score,
-            scoreLabel: lastResult.scoreLabel,
-            scoreClass: lastResult.scoreLabelClass,
-            error: 'You are only allowed to download the demo report once.',
-            hideDownload: true,
-            showBack: true
-          });
-        }
-
-        req.session.demoPdfUsed = true;
-
-        // 3. Logo
-        const logoPath = path.join(__dirname, '../assets/logo_prueba.png');
-        const logoBase64 = fs.readFileSync(logoPath).toString('base64');
-
-        // 4. HTML
-        const template = pdfService.loadTemplate();
-        const html = pdfService.renderReport(template, {
-          agencyLogo: `data:image/png;base64,${logoBase64}`,
-          clientName: 'To be defined',
-          siteUrl: lastResult.url,
-          score: lastResult.score,
-          scoreLabel: lastResult.scoreLabel,
-          scoreLabelClass: lastResult.scoreLabelClass,
-          reportDate: new Date().toLocaleDateString(),
-          findings: limitFindings(lastResult.findings, 3)
-        });
-
-        // 5. Generar PDF
-        const pdfBuffer = await pdfService.generatePDF(html);
-
-        // 6. Guardar en /tmp
-        const filePath = `/tmp/security-report-${req.session.id}.pdf`;
-        fs.writeFileSync(filePath, pdfBuffer);
-
-        // 7. Guardar path en session
-        req.session.demoPdfPath = filePath;
-
-        // 8. Redirigir a descarga (rápido)
-        res.redirect('/scanner/demo/pdf/downloadFile');
-  } catch (error) {
-    console.log("a ver si en realidad falla aca");
-    console.error(error);
-  }
-};
-
-async function downloadFile(req, res) {
-  try {
-      const filePath = req.session.demoPdfPath;
-
-      if (!filePath || !fs.existsSync(filePath)) {
-        return res.redirect('/');
-      }
-
-      res.download(filePath, 'security-report-demo.pdf');
-  } catch (error) {
-    console.log(error);
-  }
-};
-
 async function renderDemoReport(req, res) {
   const lastResult = req.session.lastScan;
   
@@ -190,4 +110,4 @@ async function renderDemoReport(req, res) {
 };
 
 
-module.exports = { scan, demoScan, downloadDemoPdf, downloadFile, renderDemoReport };
+module.exports = { scan, demoScan, renderDemoReport };

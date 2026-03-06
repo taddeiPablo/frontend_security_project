@@ -22,12 +22,6 @@ function calculateSecurityScore(findings) {
   return Math.max(score, 0);
 };
 
-/*function getScoreLabel(score) {
-  if (score >= 85) return 'Bueno';
-  if (score >= 65) return 'Aceptable';
-  return 'Se recomienda aplicar mejoras';
-};*/
-
 function getScoreLabelClass(score) {
   if (score >= 80) return 'score-good';
   if (score >= 50) return 'score-warning';

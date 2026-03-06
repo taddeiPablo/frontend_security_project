@@ -1,7 +1,7 @@
 const { chromium } = require('playwright');
 
 async function loadPage(url) {
- // 1. Lanzamos el browser
+ // Lanzamos el browser
   const browser = await chromium.launch({ headless: true });
   
   try {
@@ -14,7 +14,7 @@ async function loadPage(url) {
     let mainResponse = null;
     const scriptResponses = [];
 
-    // 2. Listener de respuestas
+    // Listener de respuestas
     page.on('response', async (response) => {
       const req = response.request();
       const status = response.status();
@@ -40,7 +40,7 @@ async function loadPage(url) {
       }
     });
 
-    // 3. Navegación
+    //  Navegación
     // 'networkidle' es más seguro que 'domcontentloaded' para capturar scripts asíncronos
     await page.goto(url, { waitUntil: 'networkidle', timeout: 25000 });
 
@@ -55,7 +55,7 @@ async function loadPage(url) {
     console.error(`Error en loadPage para ${url}:`, error.message);
     throw error; // Re-lanzamos para que el controller lo capture y avise al usuario
   } finally {
-    // 4. EL PASO MÁS IMPORTANTE
+    // EL PASO MÁS IMPORTANTE
     // Pase lo que pase (éxito o error), cerramos el proceso de Chromium
     await browser.close();
   }

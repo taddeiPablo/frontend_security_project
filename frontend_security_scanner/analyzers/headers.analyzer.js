@@ -39,8 +39,7 @@ function analyzeSecurityHeaders(headers) {
         impact: 'Permite que cualquier dominio realice peticiones y lea datos de tu sitio.'
     });
   }
-
-
+  
   return findings;
 }
 
