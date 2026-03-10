@@ -9,6 +9,7 @@ const session = require('express-session');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var scanRouter = require('./routes/scan');
+const auth = require('./routes/auth');
 
 var app = express();
 
@@ -68,6 +69,7 @@ app.get('/health', (req, res) => {
 ================================ */
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/auth', auth);
 app.use('/scanner', scanLimiter, scanRouter);
 
 /* ================================
