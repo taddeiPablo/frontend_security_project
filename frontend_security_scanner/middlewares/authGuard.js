@@ -4,7 +4,7 @@ module.exports = function authGuard(req, res, next) {
  const token = req.cookies.auth_token;
 
   if (!token) {
-    return res.redirect("/auth/login");
+    return res.redirect("/users/login");
   }
 
   try {
@@ -14,9 +14,12 @@ module.exports = function authGuard(req, res, next) {
       id: decoded.id,
       email: decoded.email == null ? "No registrado" : decoded.email 
     };
+    res.locals.user = req.user;
     next();
     
   } catch (error) {
-    return res.redirect("/auth/login");
+    res.clearCookie("auth_token");
+    res.locals.user = null;
+    return res.redirect("/users/login");
   }
 };

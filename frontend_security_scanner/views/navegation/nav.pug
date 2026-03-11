@@ -1,2 +1,6 @@
-a(href="/users/Sign-In" class="text-sm px-4 py-2 rounded bg-indigo-600 text-white hover:bg-indigo-700 font-medium") Sign In
-a(href="/users/Sign-Up" class="text-sm px-4 py-2 rounded bg-indigo-600 text-white hover:bg-indigo-700 font-medium") Sign Up
+
+if user
+   a(href="/auth/logout" class="text-sm px-4 py-2 rounded bg-red-600 text-white hover:bg-red-700 font-medium") Logout
+else
+   a(href="/users/login" class="text-sm px-4 py-2 rounded bg-indigo-600 text-white hover:bg-indigo-700 font-medium") Login
+   a(href="/users/register" class="text-sm px-4 py-2 rounded bg-indigo-600 text-white hover:bg-indigo-700 font-medium") Register

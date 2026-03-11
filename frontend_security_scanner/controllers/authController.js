@@ -1,7 +1,7 @@
 const { supabase } = require("../services/supabase");
 const jwt = require('jsonwebtoken');
 
-// === Registro ===
+// === Registro === //
 exports.register = async (req, res) => {
   try {
       const { email, password, name } = req.body;
@@ -53,7 +53,7 @@ exports.register = async (req, res) => {
           return res.status(500).json({ error: profileError.message });
         }
 
-      return res.redirect('/users/Sign-In');
+      return res.redirect('/users/Login');
 
     } catch (err) {
       console.error(err);
@@ -61,7 +61,7 @@ exports.register = async (req, res) => {
     }
 };
 
-// === Login ===
+// === Login === //
 exports.login = async (req, res) => {
   try {
       const { email, password } = req.body;
@@ -100,8 +100,8 @@ exports.login = async (req, res) => {
     }
 };
 
-// === Logout ===
+// === Logout === //
 exports.logout = async (req, res) => {
-  res.clearCookie("sb_access_token");
-  res.redirect("/auth/login");
+  res.clearCookie("auth_token");
+  res.redirect("/");
 };
