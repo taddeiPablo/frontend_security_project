@@ -11,7 +11,7 @@ block content
           div(class="mb-6 p-4 bg-red-50 border border-red-200 text-red-700 rounded")
             | #{error}
         
-        form(method="POST" action="/sign-in" class="space-y-5")
+        form(method="POST" action="/auth/login" class="space-y-5")
           div
             label(for="email" class="block text-sm font-semibold text-gray-700 mb-2") Correo Electrónico
             input(
@@ -39,4 +39,4 @@ block content
           
           p(class="text-center text-sm text-gray-600 mt-6")
             | ¿No tienes cuenta? 
-            a(href='/register' class="font-semibold text-indigo-600 hover:text-indigo-700") Regístrate aquí
+            a(href='/users/Sign-Up' class="font-semibold text-indigo-600 hover:text-indigo-700") Regístrate aquí

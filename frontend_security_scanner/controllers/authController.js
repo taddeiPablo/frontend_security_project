@@ -11,7 +11,6 @@ exports.register = async (req, res) => {
           error: "Email y contraseña son requeridos."
         });
       }
-
       // Verificar si ya existe un usuario
       const { data: existing } = await supabase
         .from('profiles')
@@ -24,7 +23,6 @@ exports.register = async (req, res) => {
           error: "El email ya está registrado."
         });
       }
-
       // Crear usuario en auth.users
       const { data: user, error: signUpError } = await supabase.auth.admin.createUser({
         email,
@@ -34,17 +32,28 @@ exports.register = async (req, res) => {
 
       if (signUpError) {
         console.error(signUpError);
-        return res.status(500).render('register', { error: "Error creando usuario." });
+        return res.status(500).render('register', { error: signUpError.message });
       }
 
-      // Insertar perfil
-      await supabase.from("profiles").insert({
-        id: user.user.id,
-        email,
-        full_name: name || null
-      });
+      // Si llegamos acá, el usuario ya existe en Auth. 
+      // Ahora creamos el perfil manualmente.
+      const { error: profileError } = await supabase
+        .from("profiles")
+        .insert({
+          id: user.user.id,
+          email: email,
+          full_name: name || 'Usuario', // Evitamos que sea null
+          plan_type: 'free',
+          url: '',
+          subscription_end: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString()
+        });
 
-      return res.redirect('/login');
+        if (profileError) {
+          console.error("DETALLE DEL ERROR DE PERFIL:", profileError);
+          return res.status(500).json({ error: profileError.message });
+        }
+
+      return res.redirect('/users/Sign-In');
 
     } catch (err) {
       console.error(err);
@@ -60,13 +69,12 @@ exports.login = async (req, res) => {
       const { data, error } = await supabase.auth.signInWithPassword({ email, password });
 
       if (error || !data?.user) {
+        console.log("ingreso aqui");
         return res.status(401).render('login', {
           error: "Credenciales inválidas."
         });
       }
-      console.log("datos del usuario logueado");
-      console.log(data.user.email);
-      console.log(data.user.id);
+
       const token = jwt.sign(
         { 
           id: data.user.id,
@@ -82,7 +90,7 @@ exports.login = async (req, res) => {
         maxAge: 24 * 60 * 60 * 1000
       });
 
-      return res.redirect('/dashboard');
+      return res.redirect('/users/dashboard');
 
     } catch (err) {
       console.error(err);
