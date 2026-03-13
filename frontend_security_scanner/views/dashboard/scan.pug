@@ -11,15 +11,9 @@ block content
     .lg.col-span-2
       .bg-white.rounded-xl.shadow-sm.border.border-gray-200.p-6
         h2.text-xl.font-semibold.mb-6 Configurar Escaneo
-        form#scanForm.space-y-4
+        form(action="/scanner/" method="POST")#scanForm.space-y-4
           .flex.flex-col.gap-2
             label.font-medium URL a Escanear
-            input#url.w-full.border.rounded-lg.p-2.focus_ring-2.focus_ring-indigo-500(type="url" placeholder="https://ejemplo.com" required)
+            input#url.w-full.border.rounded-lg.p-2.focus_ring-2.focus_ring-indigo-500(type="url" name="url" value=url placeholder="https://ejemplo.com" required)
           
           button.w-full.bg-indigo-600.text-white.py-3.rounded-lg.font-bold.hover_bg-indigo-700 Iniciar Escaneo
-
-    // Stats (Ocupa 1 columna)
-    .space-y-4
-      .bg-white.p-6.rounded-xl.shadow-sm.border.border-gray-200
-        .text-gray-500.text-sm Escaneos Totales
-        .text-2xl.font-bold 0
