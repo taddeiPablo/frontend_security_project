@@ -21,11 +21,10 @@ html(lang="es")
             div.score-circle.score-medium
               div.score-value #{score}
               div.score-label #{scoreLabel}
-
           div.cover-meta
-              //p.meta-item
+              p.meta-item
                 span.meta-label Client:
-                span.meta-value #{clientName}
+                span.meta-value #{companyName}
               p.meta-item
                 span.meta-label Website:
                 span.meta-value #{url}
@@ -53,12 +52,12 @@ html(lang="es")
           div.metadata-card
             span.metadata-icon 👤
             h3.metadata-label Client
-            p.metadata-value #{clientName}
+            p.metadata-value #{companyName}
           
           div.metadata-card
             span.metadata-icon 🌐
-            h3.metadata-label Website
-            p.metadata-value #{siteUrl}
+            h3.metadata-label Websites
+            p.metadata-value #{url}
           
           div.metadata-card
             span.metadata-icon 📅

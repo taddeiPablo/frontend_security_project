@@ -9,6 +9,9 @@ const remediationData = require('../utils/remediationData');
 async function scan(req, res, next) {
   try {
     const { url } = req.body;
+    const {user, profile} = req.cookies.cookieDataInfo ? JSON.parse(req.cookies.cookieDataInfo) : {user: null, profile: {full_name: 'Empresa'}};
+    res.locals.user = user;
+    res.locals.profile = profile;
     const pageData = await loadPage(url);
     const rawFindings = await runAnalyzers(pageData, url);
 
@@ -31,7 +34,8 @@ async function scan(req, res, next) {
     req.session.lastScan = result;
     req.session.lastScan.url = url;
     
-    res.render('results/demo', {
+    res.render('results/premium', {
+      companyName: profile.full_name,
       url,
       findings: findingsWithRemediation || [],
       hiddenFindingsCount: result.hiddenFindingsCount,
@@ -49,7 +53,6 @@ async function scan(req, res, next) {
     });
   }
 };
-
 async function demoScan(req, res) {
     try {
         const { url } = req.body;
@@ -86,7 +89,6 @@ async function demoScan(req, res) {
       });    
     }
 };
-
 async function renderDemoReport(req, res) {
   const lastResult = req.session.lastScan;
   
@@ -95,7 +97,31 @@ async function renderDemoReport(req, res) {
   }
   
   const reportDateNow = new Date().toLocaleDateString();
-  res.render('results/report-demo', {
+  res.render('results/report', {
+    url: lastResult.url,
+    findings: limitFindings(lastResult.findings || [], 3),
+    hiddenFindingsCount: lastResult.hiddenFindingsCount,
+    score: lastResult.score,
+    scoreLabel: lastResult.scoreLabel,
+    scoreClass: lastResult.scoreLabelClass,
+    error: 'You are only allowed to download the demo report once.',
+    hideDownload: true,
+    showBack: true,
+    reportDate: reportDateNow
+  });
+};
+async function renderPremiumReport(req, res) {
+  const lastResult = req.session.lastScan;
+  const { profile } = req.cookies.cookieDataInfo ? JSON.parse(req.cookies.cookieDataInfo) : {user: null, profile: {full_name: 'Empresa'}};
+
+  if (!lastResult) {
+    return res.redirect('/');
+  }  
+  const reportDateNow = new Date().toLocaleDateString();
+  const profile_companyName = profile.full_name || 'Empresa';
+  
+  res.render('results/report', {
+    companyName: profile_companyName,
     url: lastResult.url,
     findings: limitFindings(lastResult.findings || [], 3),
     hiddenFindingsCount: lastResult.hiddenFindingsCount,
@@ -110,4 +136,4 @@ async function renderDemoReport(req, res) {
 };
 
 
-module.exports = { scan, demoScan, renderDemoReport };
+module.exports = { scan, demoScan, renderDemoReport, renderPremiumReport };

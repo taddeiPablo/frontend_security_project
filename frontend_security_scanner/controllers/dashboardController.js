@@ -3,6 +3,7 @@ const { supabase } = require("../services/supabase");
 
 async function getDashboard(req, res, next) {
     try {
+        const cookieData = {};
         // El ID viene del token que decodificamos en el middleware (res.locals.user)
         const userId = res.locals.user.id;
         // Consultamos la tabla profiles
@@ -20,10 +21,10 @@ async function getDashboard(req, res, next) {
                 profile: { full_name: 'Usuario' } 
             });
         }
-
-        console.log("datos recuperados del perfil:", profile);
         res.locals.profile = profile; // Guardamos el perfil en res.locals para usarlo en la vista
-
+        cookieData.profile = profile;
+        cookieData.user = res.locals.user;
+        res.cookie('cookieDataInfo', JSON.stringify(cookieData), { maxAge: 24 * 60 * 60 * 1000 });
         res.render('dashboard/scan');
         
     } catch (error) {
