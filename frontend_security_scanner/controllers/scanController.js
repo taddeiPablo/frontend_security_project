@@ -4,7 +4,7 @@ const { calculateSecurityScore, getScoreLabel } = require('../services/score.ser
 const scannerService = require('../services/scanner.service');
 const { limitFindings } = require('../utils/demoLimiter.util');
 const remediationData = require('../utils/remediationData');
-
+const { supabase } = require("../services/supabase");
 
 async function scan(req, res, next) {
   try {
@@ -134,6 +134,5 @@ async function renderPremiumReport(req, res) {
     reportDate: reportDateNow
   });
 };
-
 
 module.exports = { scan, demoScan, renderDemoReport, renderPremiumReport };

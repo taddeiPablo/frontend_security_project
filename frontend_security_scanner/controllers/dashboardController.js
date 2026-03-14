@@ -33,4 +33,13 @@ async function getDashboard(req, res, next) {
     }
 };
 
-module.exports = { getDashboard };
+async function getListScan(req, res, next) {
+    try {
+        
+    } catch (error) {
+        
+    }
+};
+
+
+module.exports = { getDashboard, getListScan };
