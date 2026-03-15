@@ -4,7 +4,7 @@ const { calculateSecurityScore, getScoreLabel } = require('../services/score.ser
 const scannerService = require('../services/scanner.service');
 const { limitFindings } = require('../utils/demoLimiter.util');
 const remediationData = require('../utils/remediationData');
-const { supabase } = require("../services/supabase");
+const { insertScan } = require('../lib/supabaseCrud');
 
 async function scan(req, res, next) {
   try {
@@ -33,6 +33,8 @@ async function scan(req, res, next) {
     result.hiddenFindingsCount = result.findings.length - findingsWithRemediation.length;
     req.session.lastScan = result;
     req.session.lastScan.url = url;
+    
+    await insertScan(user.id, url, score, result.findings);
     
     res.render('results/premium', {
       companyName: profile.full_name,
