@@ -136,5 +136,21 @@ async function renderPremiumReport(req, res) {
     reportDate: reportDateNow
   });
 };
+async function deleteScan(req, res, next) {
+    try {
+        console.log("ID a eliminar: " + req.params.id);
+        const scanId = req.params.id;
+        const { user } = req.cookies.cookieDataInfo ? JSON.parse(req.cookies.cookieDataInfo) : {user: null, profile: {full_name: 'Empresa'}};
+        const user_id = user ? user.id : null;
+        await deleteScan(scanId, user_id);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+          error: 'No fue posible eliminar el escaneo'
+        });
+    }
+};
 
-module.exports = { scan, demoScan, renderDemoReport, renderPremiumReport };
+
+
+module.exports = { scan, demoScan, renderDemoReport, renderPremiumReport, deleteScan };

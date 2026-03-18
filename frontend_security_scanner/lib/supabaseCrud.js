@@ -42,7 +42,24 @@ const insertScan = async (userid, url, score, findings) => {
     }
 };
 
+const deleteScan = async (scanId, userId) => {
+  try {
+    const { error } = await supabase
+        .from('scans')
+        .delete()
+        .eq('id', scanId)
+        .eq('user_id', userId); // Doble validación de seguridad
+
+    if (error) {
+        return res.status(500).json({ error: "No se pudo borrar el escaneo" });
+    }
+  } catch (error) {
+    console.error("Error en deleteScan:", error.message);
+  }
+};
+
 module.exports = {
   insertScan,
-  lists_of_scans
+  lists_of_scans,
+  deleteScan
 };

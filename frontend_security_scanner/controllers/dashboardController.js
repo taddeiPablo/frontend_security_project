@@ -37,7 +37,6 @@ async function getDashboard(req, res, next) {
         res.redirect('/users/login');
     }
 };
-
 async function getListScan(req, res, next) {
     try {
         //TODO : REALIZAR LO MISMO QUE EN GETDASHBOARD ACA YA QUE TIENE LA MISMA LOGICA
@@ -71,6 +70,34 @@ async function getListScan(req, res, next) {
         res.render('dashboard/lists', { scans: [] });
     }
 };
+async function getPlans(req, res, next) {
+    //TODO : REALIZAR LO MISMO QUE EN GETDASHBOARD ACA YA QUE TIENE LA MISMA LOGICA
+    const cookieData = {};
+    //const userId = res.locals.user.id;
+    // El ID viene del token que decodificamos en el middleware (res.locals.user)
+    const userId = res.locals.user.id;
+    // Consultamos la tabla profiles
+    const { data: profile, error } = await supabase
+        .from('profiles')
+        .select('full_name, plan_type, email')
+        .eq('id', userId)
+        .single();
+        
+    if (error) {
+        console.error('Error recuperando perfil:', error.message);
+        // Si hay error, enviamos datos vacíos para que no rompa la vista
+        return res.render('dashboard', { 
+            title: 'Dashboard',
+            profile: { full_name: 'Usuario' } 
+        });
+    }
 
+    res.locals.profile = profile;
+    cookieData.profile = profile;
+    cookieData.user = res.locals.user;
+    res.cookie('cookieDataInfo', JSON.stringify(cookieData), { maxAge: 24 * 60 * 60 * 1000 });
 
-module.exports = { getDashboard, getListScan };
+    res.render('dashboard/plans');
+};
+
+module.exports = { getDashboard, getListScan, getPlans };
