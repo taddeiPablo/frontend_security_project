@@ -7,6 +7,10 @@ a {
   color: #ffffff;
 }
 
+.item_scan{
+  color: #0414fa !important;
+}
+
 #contact, 
 #full-version {
   padding: revert-layer;

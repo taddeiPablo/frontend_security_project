@@ -44,22 +44,47 @@ const insertScan = async (userid, url, score, findings) => {
 
 const deleteScan = async (scanId, userId) => {
   try {
-    const { error } = await supabase
+    const {data, error } = await supabase
         .from('scans')
         .delete()
         .eq('id', scanId)
         .eq('user_id', userId); // Doble validación de seguridad
 
     if (error) {
-        return res.status(500).json({ error: "No se pudo borrar el escaneo" });
+        //return res.status(500).json({ error: "No se pudo borrar el escaneo" });
+        return { error: "No se pudo borrar el escaneo" };
     }
+    return data; // Devuelve el resultado de la eliminación
   } catch (error) {
     console.error("Error en deleteScan:", error.message);
+    return { error: "Error al eliminar el escaneo" };
+  }
+};
+
+const showScan = async (scanId, userId) => {
+  try { 
+      // Query para recuperar el escaneo específico
+      const { data: scan, error } = await supabase
+          .from('scans')
+          .select('*') // Traemos todos los campos: id, url, score, findings, etc.
+          .eq('id', scanId)
+          .eq('user_id', userId) // Seguridad: solo el dueño puede verlo
+          .single();
+
+      if (error || !scan) {
+        console.error('Error al obtener el escaneo:', error);
+      }
+         
+    return scan;
+  } catch (error) {
+    console.error("Error en showScan:", error.message);
+    return { error: "Error al mostrar el escaneo" };
   }
 };
 
 module.exports = {
   insertScan,
   lists_of_scans,
-  deleteScan
+  deleteScan,
+  showScan
 };

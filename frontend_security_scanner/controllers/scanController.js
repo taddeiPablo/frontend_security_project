@@ -4,7 +4,7 @@ const { calculateSecurityScore, getScoreLabel } = require('../services/score.ser
 const scannerService = require('../services/scanner.service');
 const { limitFindings } = require('../utils/demoLimiter.util');
 const remediationData = require('../utils/remediationData');
-const { insertScan } = require('../lib/supabaseCrud');
+const { insertScan, deleteScan, showScan } = require('../lib/supabaseCrud');
 
 async function scan(req, res, next) {
   try {
@@ -136,13 +136,15 @@ async function renderPremiumReport(req, res) {
     reportDate: reportDateNow
   });
 };
-async function deleteScan(req, res, next) {
+async function delete_Scan(req, res, next) {
     try {
-        console.log("ID a eliminar: " + req.params.id);
         const scanId = req.params.id;
         const { user } = req.cookies.cookieDataInfo ? JSON.parse(req.cookies.cookieDataInfo) : {user: null, profile: {full_name: 'Empresa'}};
         const user_id = user ? user.id : null;
-        await deleteScan(scanId, user_id);
+        const result_delete = await deleteScan(scanId, user_id);
+        res.status(200).json({
+          result: result_delete
+        });    
     } catch (error) {
         console.error(error);
         res.status(500).json({
@@ -150,7 +152,43 @@ async function deleteScan(req, res, next) {
         });
     }
 };
+async function show_Scan(req, res, next) {
+  try {
+    const scanId = req.params.id;
+    const { user, profile } = req.cookies.cookieDataInfo ? JSON.parse(req.cookies.cookieDataInfo) : {user: null, profile: {full_name: 'Empresa'}};
+    const user_id = user ? user.id : null;
+    res.locals.user = user;
+    res.locals.profile = profile;
+    const scanData = await showScan(scanId, user_id);
+    result = {};
+    result.url = scanData.url || '';
+    result.findings = scanData.findings || [];
+    result.score = scanData.score || 0;   
+    result.scoreLabel = getScoreLabel(result.score).label;
+    result.scoreLabelClass = getScoreLabel(result.score).className;
+    result.hiddenFindingsCount = result.findings.length - result.findings.length;
+    req.session.lastScan = result;
+    req.session.lastScan.url = result.url;
+    
+    res.render('results/premium' , { 
+      companyName: profile.full_name,
+      url: scanData.url,
+      findings: result.findings || [],
+      hiddenFindingsCount: result.hiddenFindingsCount,
+      score: result.score,
+      scoreLabel: result.scoreLabel, // aqui aplicar cambio
+      scoreClass: result.scoreLabelClass, // aqui aplicar cambio
+      hideDownload: false,
+      showBack: false
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      error: 'No fue posible obtener el escaneo'
+    });
+  }
+}
 
 
 
-module.exports = { scan, demoScan, renderDemoReport, renderPremiumReport, deleteScan };
+module.exports = { scan, demoScan, renderDemoReport, renderPremiumReport, delete_Scan, show_Scan };
