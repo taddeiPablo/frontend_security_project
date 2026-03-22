@@ -1,4 +1,4 @@
-const { supabase } = require("../services/supabase");
+const { supabase } = require("./services/supabase");
 
 
 const lists_of_scans = async (user_id) => {
@@ -16,7 +16,6 @@ const lists_of_scans = async (user_id) => {
     return [];
   }
 };
-
 const insertScan = async (userid, url, score, findings) => {
     try {
         // Suponiendo que ya tienes los resultados listos en variables
@@ -41,7 +40,6 @@ const insertScan = async (userid, url, score, findings) => {
         console.error("Error en insertScan:", error.message);
     }
 };
-
 const deleteScan = async (scanId, userId) => {
   try {
     const {data, error } = await supabase
@@ -60,7 +58,6 @@ const deleteScan = async (scanId, userId) => {
     return { error: "Error al eliminar el escaneo" };
   }
 };
-
 const showScan = async (scanId, userId) => {
   try { 
       // Query para recuperar el escaneo específico
@@ -81,8 +78,24 @@ const showScan = async (scanId, userId) => {
     return { error: "Error al mostrar el escaneo" };
   }
 };
+const getProfile = async (userId) => {
+  const { data: profile, error } = await supabase
+    .from('profiles')
+    .select('full_name, plan_type, email')
+    .eq('id', userId)
+    .single();
+        
+    if (error || !profile) {
+      console.error('Error recuperando perfil:', error);
+      //return { error: "Error al obtener el perfil" };
+      throw error;
+    }
+    
+    return profile;
+};
 
 module.exports = {
+  getProfile,
   insertScan,
   lists_of_scans,
   deleteScan,

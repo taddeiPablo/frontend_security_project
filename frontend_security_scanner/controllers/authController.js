@@ -1,4 +1,4 @@
-const { supabase } = require("../services/supabase");
+const { supabase } = require("../lib/services/supabase");
 const jwt = require('jsonwebtoken');
 
 // === Registro === //
@@ -103,5 +103,7 @@ exports.login = async (req, res) => {
 // === Logout === //
 exports.logout = async (req, res) => {
   res.clearCookie("auth_token");
+  res.clearCookie("cookieDataInfo");
+
   res.redirect("/");
 };

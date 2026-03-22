@@ -4,7 +4,7 @@ const { calculateSecurityScore, getScoreLabel } = require('../services/score.ser
 const scannerService = require('../services/scanner.service');
 const { limitFindings } = require('../utils/demoLimiter.util');
 const remediationData = require('../utils/remediationData');
-const { insertScan, deleteScan, showScan } = require('../lib/supabaseCrud');
+const { insertScan, deleteScan, showScan } = require('../lib/supabaseActions');
 
 async function scan(req, res, next) {
   try {
