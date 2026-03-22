@@ -90,8 +90,12 @@ const getProfile = async (userId) => {
       //return { error: "Error al obtener el perfil" };
       throw error;
     }
-    
+
     return profile;
+};
+
+const register = async (name, email, password) => {
+  
 };
 
 module.exports = {
