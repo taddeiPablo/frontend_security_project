@@ -133,8 +133,13 @@ exports.login = async (req, res) => {
 
 // === Logout === //
 exports.logout = async (req, res) => {
-  res.clearCookie("auth_token");
-  res.clearCookie("cookieDataInfo");
-
-  res.redirect("/");
+  try {
+      await supabase.auth.signOut();
+      res.clearCookie("auth_token");
+      res.clearCookie("cookieDataInfo");
+      res.redirect("/"); 
+  } catch (error) {
+      console.error('Error al cerrar sesión:', error);
+      res.redirect('/dashboard');
+  }
 };
