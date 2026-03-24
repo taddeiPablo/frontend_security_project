@@ -94,10 +94,6 @@ const getProfile = async (userId) => {
     return profile;
 };
 
-const register = async (name, email, password) => {
-  
-};
-
 module.exports = {
   getProfile,
   insertScan,
