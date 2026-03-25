@@ -12,24 +12,22 @@ block content
     // Contenedor de Planes
     .grid.grid-cols-1.md.grid-cols-2.lg.grid-cols-3.gap-8.max-w-6xl.mx-auto
       
-      // Plan Básico - $60
+      // Plan Básico - $free
       .bg-white.rounded-lg.shadow-lg.overflow-hidden.hover.scale-105.transition.duration-300.flex.flex-col
         // Header del Plan
         .bg-gradient-to-r.from-blue-500.to-blue-600.px-6.py-8.text-white
           h2.text-2xl.font-bold.mb-2
             | Plan Básico
           p.text-blue-100.text-sm
-            | Ideal para sitios pequeños
-        
+            | Ideal para sitios pequeños o realizar pruebas rapidas
         // Precio
         .px-6.py-6.bg-gray-50
           .flex.items-baseline.gap-1
-            span.text-4xl.font-bold.text-gray-900 $60
+            span.text-4xl.font-bold.text-gray-900 Free
             span.text-gray-600.text-lg
               | /mes
-          p.text-sm.text-gray-500.mt-2
+          //p.text-sm.text-gray-500.mt-2
             | Facturación anual disponible con 10% de descuento
-        
         // Características
         .flex-1.px-6.py-8
           ul.space-y-4
@@ -37,7 +35,7 @@ block content
               svg.w-5.h-5.text-green-500.flex-shrink-0(fill="currentColor" viewBox="0 0 20 20")
                 path(fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd")
               span.text-gray-700
-                | Hasta 10 escaneos mensuales
+                | Hasta 5 escaneos mensuales
             
             li.flex.items-start.gap-3
               svg.w-5.h-5.text-green-500.flex-shrink-0(fill="currentColor" viewBox="0 0 20 20")
@@ -45,19 +43,17 @@ block content
               span.text-gray-700
                 | Análisis de vulnerabilidades básico
             
-            li.flex.items-start.gap-3
+            //li.flex.items-start.gap-3
               svg.w-5.h-5.text-green-500.flex-shrink-0(fill="currentColor" viewBox="0 0 20 20")
                 path(fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd")
               span.text-gray-700
-                | Reportes en formato PNG
-            
-            li.flex.items-start.gap-3
+                | Reportes
+            //li.flex.items-start.gap-3
               svg.w-5.h-5.text-gray-300.flex-shrink-0(fill="currentColor" viewBox="0 0 20 20")
                 path(d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z")
               span.text-gray-500
                 | Soporte por correo
-            
-            li.flex.items-start.gap-3
+            //li.flex.items-start.gap-3
               svg.w-5.h-5.text-gray-300.flex-shrink-0(fill="currentColor" viewBox="0 0 20 20")
                 path(d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z")
               span.text-gray-500
@@ -68,12 +64,11 @@ block content
           button.w-full.bg-blue-500.hover.bg-blue-600.text-white.font-semibold.py-3.px-6.rounded-lg.transition.duration-200
             | Seleccionar Plan
       
-      // Plan Profesional - $90 (Destacado)
+      // Plan Profesional - $5 (Destacado)
       .bg-white.rounded-lg.shadow-2xl.overflow-hidden.transform.hover.scale-105.transition.duration-300.flex.flex-col.border-2.border-indigo-600.relative
         // Etiqueta de Popular
         .absolute.top-0.right-0.bg-indigo-600.text-white.px-4.py-1.text-sm.font-bold.rounded-bl-lg
           | MÁS POPULAR
-        
         // Header del Plan
         .bg-gradient-to-r.from-indigo-600.to-indigo-700.px-6.py-8.text-white
           h2.text-2xl.font-bold.mb-2
@@ -84,11 +79,66 @@ block content
         // Precio
         .px-6.py-6.bg-gray-50
           .flex.items-baseline.gap-1
-            span.text-4xl.font-bold.text-gray-900 $90
+            span.text-4xl.font-bold.text-gray-900 $5
             span.text-gray-600.text-lg
               | /mes
-          p.text-sm.text-gray-500.mt-2
+          //p.text-sm.text-gray-500.mt-2
             | Facturación anual disponible con 15% de descuento
+        // Características
+        .flex-1.px-6.py-8
+          ul.space-y-4
+            li.flex.items-start.gap-3
+              svg.w-5.h-5.text-green-500.flex-shrink-0(fill="currentColor" viewBox="0 0 20 20")
+                path(fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd")
+              span.text-gray-700.font-medium
+                | Hasta 50 escaneos mensuales
+            
+            li.flex.items-start.gap-3
+              svg.w-5.h-5.text-green-500.flex-shrink-0(fill="currentColor" viewBox="0 0 20 20")
+                path(fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd")
+              span.text-gray-700.font-medium
+                | Análisis avanzado de vulnerabilidades
+            
+            li.flex.items-start.gap-3
+              svg.w-5.h-5.text-green-500.flex-shrink-0(fill="currentColor" viewBox="0 0 20 20")
+                path(fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd")
+              span.text-gray-700.font-medium
+                | Vista de Reportes
+            
+            //li.flex.items-start.gap-3
+              svg.w-5.h-5.text-green-500.flex-shrink-0(fill="currentColor" viewBox="0 0 20 20")
+                path(fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd")
+              span.text-gray-700.font-medium
+                | Soporte prioritario por correo y chat
+            
+            //li.flex.items-start.gap-3
+              svg.w-5.h-5.text-green-500.flex-shrink-0(fill="currentColor" viewBox="0 0 20 20")
+                path(fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd")
+              span.text-gray-700.font-medium
+                | API integrada completa
+        
+        // Botón
+        .px-6.pb-8
+          button.w-full.bg-indigo-600.hover.bg-indigo-700.text-white.font-semibold.py-3.px-6.rounded-lg.transition.duration-200
+            | Seleccionar Plan
+      
+      // Plan Enterprise - $20
+      .bg-white.rounded-lg.shadow-lg.overflow-hidden.hover.scale-105.transition.duration-300.flex.flex-col
+        // Header del Plan
+        .bg-gradient-to-r.from-purple-600.to-purple-700.px-6.py-8.text-white
+          h2.text-2xl.font-bold.mb-2
+            | Plan Enterprise
+          p.text-purple-100.text-sm
+            | Solución completa para empresas
+        
+        // Precio
+        .px-6.py-6.bg-gray-50
+          .flex.items-baseline.gap-1
+            span.text-4xl.font-bold.text-gray-900 $20
+            span.text-gray-600.text-lg
+              | /mes
+          //p.text-sm.text-gray-500.mt-2
+            | Facturación anual disponible con 20% de descuento
         
         // Características
         .flex-1.px-6.py-8
@@ -103,77 +153,25 @@ block content
               svg.w-5.h-5.text-green-500.flex-shrink-0(fill="currentColor" viewBox="0 0 20 20")
                 path(fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd")
               span.text-gray-700.font-medium
-                | Análisis avanzado de vulnerabilidades
+                | Análisis profundo y completo de vulnerabilidades
             
             li.flex.items-start.gap-3
               svg.w-5.h-5.text-green-500.flex-shrink-0(fill="currentColor" viewBox="0 0 20 20")
                 path(fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd")
               span.text-gray-700.font-medium
-                | Reportes en PNG, PDF y HTML
-            
+                | Vista de Reporte
             li.flex.items-start.gap-3
               svg.w-5.h-5.text-green-500.flex-shrink-0(fill="currentColor" viewBox="0 0 20 20")
                 path(fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd")
               span.text-gray-700.font-medium
-                | Soporte prioritario por correo y chat
-            
-            li.flex.items-start.gap-3
-              svg.w-5.h-5.text-green-500.flex-shrink-0(fill="currentColor" viewBox="0 0 20 20")
-                path(fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd")
-              span.text-gray-700.font-medium
-                | API integrada completa
-        
-        // Botón
-        .px-6.pb-8
-          button.w-full.bg-indigo-600.hover.bg-indigo-700.text-white.font-semibold.py-3.px-6.rounded-lg.transition.duration-200
-            | Suscribirse Ahora
-      
-      // Plan Enterprise - $100
-      .bg-white.rounded-lg.shadow-lg.overflow-hidden.hover.scale-105.transition.duration-300.flex.flex-col
-        // Header del Plan
-        .bg-gradient-to-r.from-purple-600.to-purple-700.px-6.py-8.text-white
-          h2.text-2xl.font-bold.mb-2
-            | Plan Enterprise
-          p.text-purple-100.text-sm
-            | Solución completa para empresas
-        
-        // Precio
-        .px-6.py-6.bg-gray-50
-          .flex.items-baseline.gap-1
-            span.text-4xl.font-bold.text-gray-900 $100
-            span.text-gray-600.text-lg
-              | /mes
-          p.text-sm.text-gray-500.mt-2
-            | Facturación anual disponible con 20% de descuento
-        
-        // Características
-        .flex-1.px-6.py-8
-          ul.space-y-4
-            li.flex.items-start.gap-3
-              svg.w-5.h-5.text-green-500.flex-shrink-0(fill="currentColor" viewBox="0 0 20 20")
-                path(fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd")
-              span.text-gray-700.font-medium
-                | Escaneos ilimitados y en tiempo real
-            
-            li.flex.items-start.gap-3
-              svg.w-5.h-5.text-green-500.flex-shrink-0(fill="currentColor" viewBox="0 0 20 20")
-                path(fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd")
-              span.text-gray-700.font-medium
-                | Análisis profundo y personalizado
-            
-            li.flex.items-start.gap-3
-              svg.w-5.h-5.text-green-500.flex-shrink-0(fill="currentColor" viewBox="0 0 20 20")
-                path(fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd")
-              span.text-gray-700.font-medium
-                | Todos los formatos de reportes + personalización
-            
-            li.flex.items-start.gap-3
+                | Descarga de Reporte PDF y mas formatos.
+            //li.flex.items-start.gap-3
               svg.w-5.h-5.text-green-500.flex-shrink-0(fill="currentColor" viewBox="0 0 20 20")
                 path(fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd")
               span.text-gray-700.font-medium
                 | Soporte dedicado 24/7 por teléfono
             
-            li.flex.items-start.gap-3
+            //li.flex.items-start.gap-3
               svg.w-5.h-5.text-green-500.flex-shrink-0(fill="currentColor" viewBox="0 0 20 20")
                 path(fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd")
               span.text-gray-700.font-medium
@@ -182,7 +180,7 @@ block content
         // Botón
         .px-6.pb-8
           button.w-full.bg-purple-600.hover.bg-purple-700.text-white.font-semibold.py-3.px-6.rounded-lg.transition.duration-200
-            | Contactar Ventas
+            | Seleccionar Plan
 
     // Sección de Características Comparativas
     .mt-16.max-w-6xl.mx-auto
@@ -207,9 +205,9 @@ block content
               td.px-6.py-4.font-medium.text-gray-900
                 | Escaneos mensuales
               td.px-6.py-4.text-center.text-gray-700
-                | 10
+                | 5
               td.px-6.py-4.text-center.text-gray-700
-                | Ilimitados
+                | 50
               td.px-6.py-4.text-center.text-gray-700
                 | Ilimitados
             
@@ -228,11 +226,13 @@ block content
             
             tr.border-b.border-gray-200.hover.bg-gray-50
               td.px-6.py-4.font-medium.text-gray-900
-                | Reportes PDF
+                | Reportes
               td.px-6.py-4.text-center
                 svg.w-5.h-5.text-gray-300.inline(fill="currentColor" viewBox="0 0 20 20")
                   path(d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z")
               td.px-6.py-4.text-center
+                //svg.w-5.h-5.text-gray-300.inline(fill="currentColor" viewBox="0 0 20 20")
+                  path(d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z")
                 svg.w-5.h-5.text-green-500.inline(fill="currentColor" viewBox="0 0 20 20")
                   path(fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd")
               td.px-6.py-4.text-center
@@ -241,15 +241,18 @@ block content
             
             tr.border-b.border-gray-200.hover.bg-gray-50
               td.px-6.py-4.font-medium.text-gray-900
-                | Soporte
+                | Descarga de Reportes PDF
               td.px-6.py-4.text-center.text-gray-700.text-sm
-                | Correo
+                svg.w-5.h-5.text-gray-300.inline(fill="currentColor" viewBox="0 0 20 20")
+                  path(d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z")
               td.px-6.py-4.text-center.text-gray-700.text-sm
-                | Chat + Correo
+                svg.w-5.h-5.text-gray-300.inline(fill="currentColor" viewBox="0 0 20 20")
+                  path(d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z")
               td.px-6.py-4.text-center.text-gray-700.text-sm
-                | 24/7 dedicado
+                svg.w-5.h-5.text-green-500.inline(fill="currentColor" viewBox="0 0 20 20")
+                  path(fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd")
             
-            tr.border-b.border-gray-200.hover.bg-gray-50
+            //tr.border-b.border-gray-200.hover.bg-gray-50
               td.px-6.py-4.font-medium.text-gray-900
                 | API Access
               td.px-6.py-4.text-center

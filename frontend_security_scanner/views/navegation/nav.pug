@@ -1,5 +1,6 @@
 
 if user
+   span #{profile.plan_type}
    a(href="/auth/logout" class="text-sm px-4 py-2 rounded bg-red-600 text-white hover:bg-red-700 font-medium") Logout
 else
    a(href="/users/login" class="text-sm px-4 py-2 rounded bg-indigo-600 text-white hover:bg-indigo-700 font-medium") Login

@@ -4,12 +4,11 @@ const { lists_of_scans, getProfile } = require('../lib/supabaseActions');
 async function LoadProfileData(request, userId){
     var profile_data = {};
     if(!request.cookies.cookieDataInfo){
-        console.log("consulta de perfil en base de datos");
         profile_data = await getProfile(userId);
     }else{
-        console.log("consulta de perfil en cookies");
         profile_data = JSON.parse(request.cookies.cookieDataInfo).profile;
     }
+    profile_data.urlAction = profile_data.plan_type === 'free' ? 'demoScan' : 'premium';
     return profile_data;
 };
 async function getDashboard(req, res, next) {
