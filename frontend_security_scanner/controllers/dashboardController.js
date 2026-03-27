@@ -8,7 +8,6 @@ async function LoadProfileData(request, userId){
     }else{
         profile_data = JSON.parse(request.cookies.cookieDataInfo).profile;
     }
-    profile_data.urlAction = profile_data.plan_type === 'free' ? 'demoScan' : 'premium';
     return profile_data;
 };
 async function getDashboard(req, res, next) {

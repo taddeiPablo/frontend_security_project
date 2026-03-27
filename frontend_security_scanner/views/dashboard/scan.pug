@@ -11,7 +11,7 @@ block content
     .lg.col-span-2
       .bg-white.rounded-xl.shadow-sm.border.border-gray-200.p-6
         h2.text-xl.font-semibold.mb-6 Comenzar Escaneo #{profile.plan_type}
-        form(action=`/scanner/${profile.urlAction}`, method="POST")#scanForm.space-y-4
+        form(action=`/scanner/scan`, method="POST")#scanForm.space-y-4
           .flex.flex-col.gap-2
             label.font-medium URL a Escanear
             input#url.w-full.border.rounded-lg.p-2.focus_ring-2.focus_ring-indigo-500(type="url" name="url" value=url placeholder="https://ejemplo.com" required)

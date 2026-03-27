@@ -1,7 +1,7 @@
 const { loadPage } = require('../services/browser.service');
 const { runAnalyzers } = require('../services/analyzer.service');
 const { calculateSecurityScore, getScoreLabel } = require('../services/score.service');
-const scannerService = require('../services/scanner.service');
+const {demo_Scan, calculateScore } = require('../services/scanner.service');
 const { limitFindings } = require('../utils/demoLimiter.util');
 const remediationData = require('../utils/remediationData');
 const { insertScan, deleteScan, showScan } = require('../lib/supabaseActions');
@@ -12,38 +12,56 @@ async function scan(req, res, next) {
     const {user, profile} = req.cookies.cookieDataInfo ? JSON.parse(req.cookies.cookieDataInfo) : {user: null, profile: {full_name: 'Empresa'}};
     res.locals.user = user;
     res.locals.profile = profile;
-    const pageData = await loadPage(url);
-    const rawFindings = await runAnalyzers(pageData, url);
-
-    const findingsWithRemediation = rawFindings.map(f => {
-        return {
-            ...f,
-            remediation: remediationData[f.id] || null 
-        };
-    });
-
-    const score = calculateSecurityScore(findingsWithRemediation);
-    const scoreMeta = getScoreLabel(score);
-
     result = {};
-    result.findings = findingsWithRemediation;
-    result.score = score;   
-    result.scoreLabel = scoreMeta.label;
-    result.scoreLabelClass = scoreMeta.className;
-    result.hiddenFindingsCount = result.findings.length - findingsWithRemediation.length;
+
+    if(profile.plan_type !== 'free'){
+        // ejecucion de funciones para escaneo
+        const pageData = await loadPage(url);
+        const rawFindings = await runAnalyzers(pageData, url);
+        const findingsWithRemediation = rawFindings.map(f => {
+            return {
+                ...f,
+                remediation: remediationData[f.id] || null 
+            };
+        });
+        const score = calculateSecurityScore(findingsWithRemediation);
+        const scoreMeta = getScoreLabel(score);
+        result.url = url || '';
+        result.companyName = profile.full_name || 'Empresa';
+        result.findings = findingsWithRemediation;
+        result.score = score;   
+        result.scoreLabel = scoreMeta.label;
+        result.scoreLabelClass = scoreMeta.className;
+        result.hiddenFindingsCount = result.findings.length - findingsWithRemediation.length;
+        console.log(result);
+      }else{
+        // Lógica para escaneo free
+        const pageData = await loadPage(url);
+        const rawFindings = await runAnalyzers(pageData, url);
+        const demoFindings = limitFindings(rawFindings, 3);
+        const scoreMeta = getScoreLabel(rawFindings.score);
+        result.url = url || '';
+        result.companyName = profile.full_name || 'Empresa';
+        result.findings = demoFindings;
+        result.score = calculateScore(rawFindings);
+        result.scoreLabel = scoreMeta.label;
+        result.scoreLabelClass = scoreMeta.className;
+        result.hiddenFindingsCount = result.findings.length - demoFindings.length;
+        console.log(result);
+    }
     req.session.lastScan = result;
     req.session.lastScan.url = url;
     
-    await insertScan(user.id, url, score, result.findings);
+    await insertScan(user.id, url, result.score, result.findings);
     
     res.render('results/premium', {
-      companyName: profile.full_name,
-      url,
-      findings: findingsWithRemediation || [],
+      companyName: result.companyName,
+      url: result.url,
+      findings: result.findings || [],
       hiddenFindingsCount: result.hiddenFindingsCount,
       score: result.score,
-      scoreLabel: scoreMeta.label,
-      scoreClass: scoreMeta.className,
+      scoreLabel: result.scoreLabel,//scoreMeta.label,
+      scoreClass: result.scoreLabelClass,//scoreMeta.className,
       hideDownload: false,
       showBack: false
     });
@@ -65,8 +83,8 @@ async function demoScan(req, res) {
           });
         }
         
-        const result = await scannerService.demoScan(url);
-        const demoFindings = limitFindings(result.findings, 3);
+        const result = await demo_Scan(url);
+        const demoFindings = limitFindings(result.findings, 2);
         const scoreMeta = getScoreLabel(result.score);
         result.scoreLabel = scoreMeta.label;
         result.scoreLabelClass = scoreMeta.className;

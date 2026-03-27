@@ -1,6 +1,6 @@
 const axios = require('axios');
 
-async function demoScan(url) {
+async function demo_Scan(url) {
   const findings = [];
 
   let response;
@@ -129,4 +129,4 @@ function calculateScore(findings) {
   return Math.max(score, 20);
 }
 
-module.exports = { demoScan };
+module.exports = { demo_Scan, calculateScore };

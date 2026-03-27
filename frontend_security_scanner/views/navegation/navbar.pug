@@ -1,6 +1,8 @@
 .flex.flex-col.h-full
   .p-6.text-xl.font-bold.border-b.border-indigo-800
     | #{profile.full_name}
+  .p-2.text-sm.font-bold.border-b.border-indigo-800 
+    | Cuenta : #{profile.plan_type}
   
   nav.flex-1.mt-4
     a.flex.items-center.px-6.py-3.text-indigo-100.hover_bg-indigo-800(href="/dashboard")
