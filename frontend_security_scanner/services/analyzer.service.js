@@ -10,9 +10,7 @@ async function runAnalyzers(data, url) {
   findings.push(...analyzeSecurityHeaders(data.headers));
   findings.push(...analyzeJavaScriptExposure(data.scripts));
   findings.push(...analyzeSecrets(data.scripts));
-  
-  // Este requiere esperar a la red (Asíncrono)
-  const infraFindings = await analyzeExposedFiles(url);
+  const infraFindings = await analyzeExposedFiles(url); // Este requiere esperar a la red (Asíncrono)
   findings.push(...infraFindings);
 
   return findings;
